@@ -23,7 +23,7 @@
  */
 
 
-namespace Malenki;
+namespace Malenki\Url;
 
 class Url
 {

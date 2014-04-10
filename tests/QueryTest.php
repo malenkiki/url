@@ -25,28 +25,40 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 use \Malenki\Url\Url;
 use \Malenki\Url\Query;
 
-class UrlTest extends PHPUnit_Framework_TestCase
+class QueryTest extends PHPUnit_Framework_TestCase
 {
     public function testInstanciateWithStringShouldSuccess()
     {
-        $u = new Url('https://github.com');
-        $this->assertInstanceOf('\Malenki\Url\Url', $u);
+        $q = new Query('arg=value');
+        $this->assertInstanceOf('\Malenki\Url\Query', $q);
+    }
+    
+    
+    public function testInstanciateWithArrayShouldSuccess()
+    {
+        $q = new Query(array('arg' => 'value'));
+        $this->assertInstanceOf('\Malenki\Url\Query', $q);
     }
 
-    public function testGettingAllPartShouldSuccess()
+    public function testCountingShouldSuccess()
     {
-        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
-        $this->assertEquals('http', $u->scheme);
-        $this->assertEquals('username', $u->user);
-        $this->assertEquals('password', $u->pass);
-        $this->assertEquals('hostname', $u->host);
-        $this->assertEquals(8080, $u->port);
-        $this->assertEquals('/path', $u->path);
-        $this->assertEquals('arg=value', $u->query);
-        $this->assertEquals('anchor', $u->fragment);
-        $this->assertEquals('anchor', $u->anchor);
-        $this->assertEquals('username', $u->credential->user);
-        $this->assertEquals('password', $u->credential->pass);
-        $this->assertEquals('username:password', $u->credential->str);
+        $q = new Query('arg=value&arg2=value2');
+        $this->assertEquals(2, count($q));
+    }
+    
+    public function testGettingArgShouldSuccess()
+    {
+        $q = new Query('arg=value&arg2=value2');
+        $this->assertEquals('value', $q->arg);
+        $this->assertEquals('value2', $q->arg2);
+    }
+    
+    public function testSettingArgShouldSuccess()
+    {
+        $q = new Query('arg=value&arg2=value2');
+        $q->arg3 = 'value3';
+
+        $this->assertEquals('value3', $q->arg3);
     }
 }
+

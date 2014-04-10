@@ -35,7 +35,9 @@ class Url
                     'pass',
                     'path',
                     'query',
-                    'fragment'
+                    'fragment',
+                    'anchor',
+                    'credential'
                 );
 
     protected $value = null;
@@ -97,6 +99,26 @@ class Url
     protected function _fragment()
     {
         return parse_url($this->value, PHP_URL_FRAGMENT);
+    }
+
+    protected function _anchor()
+    {
+        return $this->_fragment();
+    }
+
+    protected function _credential()
+    {
+        if($this->_user() && $this->_path())
+        {
+            $out = new \stdClass();
+            $out->user = $this->_user();
+            $out->pass = $this->_pass();
+            $out->str = sprintf('%s:%s', $out->user, $out->pass);
+
+            return $out;
+        }
+
+        return null;
     }
 
     public function __toString()

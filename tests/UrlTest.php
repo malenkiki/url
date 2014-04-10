@@ -43,5 +43,9 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('/path', $u->path);
         $this->assertEquals('arg=value', $u->query);
         $this->assertEquals('anchor', $u->fragment);
+        $this->assertEquals('anchor', $u->anchor);
+        $this->assertEquals('username', $u->credential->user);
+        $this->assertEquals('password', $u->credential->pass);
+        $this->assertEquals('username:password', $u->credential->str);
     }
 }

@@ -27,4 +27,19 @@ namespace Malenki;
 
 class Url
 {
+    protected $value = null;
+
+
+
+    public function __construct($url)
+    {
+        $this->value = $url;
+    }
+
+
+
+    public function __toString()
+    {
+        return $this->value;
+    }
 }

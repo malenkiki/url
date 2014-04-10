@@ -27,7 +27,29 @@ namespace Malenki;
 
 class Url
 {
+    protected static $arr_parts = array(
+                    'scheme',
+                    'host',
+                    'port',
+                    'user',
+                    'pass',
+                    'path',
+                    'query',
+                    'fragment'
+                );
+
     protected $value = null;
+
+
+
+    public function __get($name)
+    {
+        if( in_array( $name, self::$arr_parts))
+        {
+            $method = '_' . $name;
+            return $this->$method();
+        }
+    }
 
 
 
@@ -37,6 +59,45 @@ class Url
     }
 
 
+    protected function _scheme()
+    {
+        return parse_url($this->value, PHP_URL_SCHEME);
+    }
+    
+    protected function _host()
+    {
+        return parse_url($this->value, PHP_URL_HOST);
+    }
+    
+    protected function _port()
+    {
+        return parse_url($this->value, PHP_URL_PORT);
+    }
+    
+    protected function _user()
+    {
+        return parse_url($this->value, PHP_URL_USER);
+    }
+    
+    protected function _pass()
+    {
+        return parse_url($this->value, PHP_URL_PASS);
+    }
+    
+    protected function _path()
+    {
+        return parse_url($this->value, PHP_URL_PATH);
+    }
+    
+    protected function _query()
+    {
+        return parse_url($this->value, PHP_URL_QUERY);
+    }
+    
+    protected function _fragment()
+    {
+        return parse_url($this->value, PHP_URL_FRAGMENT);
+    }
 
     public function __toString()
     {

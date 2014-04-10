@@ -24,7 +24,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 use \Malenki\Url;
 
-class ATest extends PHPUnit_Framework_TestCase
+class UrlTest extends PHPUnit_Framework_TestCase
 {
     public function testInstanciateWithStringShouldSuccess()
     {
@@ -32,4 +32,16 @@ class ATest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Malenki\Url', $u);
     }
 
+    public function testGettingAllPartShouldSuccess()
+    {
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $this->assertEquals('http', $u->scheme);
+        $this->assertEquals('username', $u->user);
+        $this->assertEquals('password', $u->pass);
+        $this->assertEquals('hostname', $u->host);
+        $this->assertEquals(8080, $u->port);
+        $this->assertEquals('/path', $u->path);
+        $this->assertEquals('arg=value', $u->query);
+        $this->assertEquals('anchor', $u->fragment);
+    }
 }

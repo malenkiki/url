@@ -1,0 +1,23 @@
+{
+    "name": "malenki/url",
+    "type": "library",
+    "description": "Simple class to deal with URL!",
+    "keywords": ["http","string","URL"],
+    "homepage": "https://github.com/malenkiki/url",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michel Petit",
+            "email": "petit.michel@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Malenki": "src/"
+        }
+    }
+}

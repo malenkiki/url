@@ -68,7 +68,7 @@ class Query implements \Countable
     }
 
 
-    public function __construct($query)
+    public function __construct($query = null)
     {
         if(is_string($query))
         {
@@ -98,6 +98,10 @@ class Query implements \Countable
     }
 
 
+    public function isVoid()
+    {
+        return $this->count() == 0;
+    }
 
     public function __toString()
     {

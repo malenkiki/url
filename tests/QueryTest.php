@@ -77,5 +77,13 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($q->has('value'));
         $this->assertTrue($q->has('value2'));
     }
+    
+    public function testIfQueryIsVoidOrNotShouldSuccess()
+    {
+        $q = new Query('arg=value&arg2=value2');
+        $this->assertFalse($q->isVoid());
+        $q = new Query();
+        $this->assertTrue($q->isVoid());
+    }
 }
 

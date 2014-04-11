@@ -33,14 +33,7 @@ class Query implements \Countable
 
     public function __get($name)
     {
-        if(array_key_exists($name, $this->arr))
-        {
-            return $this->arr[$name];
-        }
-        else
-        {
-            throw new \RuntimeException($name . ' arg does not exist!');
-        }
+        return $this->get($name);
     }
 
 
@@ -57,14 +50,7 @@ class Query implements \Countable
 
     public function __unset($name)
     {
-        if(array_key_exists($name, $this->arr))
-        {
-            unset($this->arr[$name]);
-        }
-        else
-        {
-            throw new \RuntimeException($name . ' arg does not exist! Cannot delete it.');
-        }
+        $this->remove($name);
     }
 
 
@@ -84,6 +70,53 @@ class Query implements \Countable
     {
         return count($this->arr);
     }
+
+
+
+    public function get($name)
+    {
+        if(array_key_exists($name, $this->arr))
+        {
+            return $this->arr[$name];
+        }
+        else
+        {
+            throw new \RuntimeException($name . ' arg does not exist!');
+        }
+    }
+
+
+
+    public function set($name, $value)
+    {
+        $this->arr[$name] =  $value;
+
+        return $this;
+    }
+
+
+
+    public function add($name, $value)
+    {
+        return $this->set($name, $value);
+    }
+
+
+
+    public function remove($name)
+    {
+        if(array_key_exists($name, $this->arr))
+        {
+            unset($this->arr[$name]);
+        }
+        else
+        {
+            throw new \RuntimeException($name . ' arg does not exist! Cannot delete it.');
+        }
+
+        return $this;
+    }
+
 
 
     public function has($value)

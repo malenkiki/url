@@ -52,7 +52,7 @@ class Query implements \Countable
 
     public function __isset($name)
     {
-        return array_key_exists($name, $this->arr);
+        return $this->exists($name);
     }
 
     public function __unset($name)
@@ -83,5 +83,24 @@ class Query implements \Countable
     public function count()
     {
         return count($this->arr);
+    }
+
+
+    public function has($value)
+    {
+        return in_array($value, $this->arr);
+    }
+
+
+    public function exists($key)
+    {
+        return array_key_exists($key, $this->arr);
+    }
+
+
+
+    public function __toString()
+    {
+        return http_build_query($this->arr);
     }
 }

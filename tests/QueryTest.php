@@ -60,5 +60,22 @@ class QueryTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('value3', $q->arg3);
     }
+    
+    
+    public function testIfArgExistsShouldSuccess()
+    {
+        $q = new Query('arg=value&arg2=value2');
+
+        $this->assertTrue($q->exists('arg'));
+        $this->assertTrue($q->exists('arg2'));
+    }
+    
+    public function testIfValueExistsShouldSuccess()
+    {
+        $q = new Query('arg=value&arg2=value2');
+
+        $this->assertTrue($q->has('value'));
+        $this->assertTrue($q->has('value2'));
+    }
 }
 

@@ -55,6 +55,13 @@ class Url
     }
 
 
+    public function __set($name, $value)
+    {
+        if($name == 'credential')
+        {
+            $this->credential = new Credential($value);
+        }
+    }
 
     public function __construct($url)
     {

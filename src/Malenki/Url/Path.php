@@ -54,8 +54,22 @@ class Path extends \Malenki\Bah\A
     }
 
 
+    public function clear()
+    {
+        $this->value = array();
+
+        return $this;
+    }
+
     public function __toString()
     {
-        return '/' . implode('/', $this->value);
+        if(count($this->value))
+        {
+            return '/' . implode('/', $this->value);
+        }
+        else
+        {
+            return '';
+        }
     }
 }

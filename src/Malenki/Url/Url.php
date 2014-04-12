@@ -28,17 +28,17 @@ namespace Malenki\Url;
 class Url
 {
     protected static $arr_parts = array(
-                    'scheme',
-                    'host',
-                    'port',
-                    'user',
-                    'pass',
-                    'path',
-                    'query',
-                    'fragment',
-                    'anchor',
-                    'credential'
-                );
+        'scheme',
+        'host',
+        'port',
+        'user',
+        'pass',
+        'path',
+        'query',
+        'fragment',
+        'anchor',
+        'credential'
+    );
 
     protected $value = null;
 
@@ -57,54 +57,85 @@ class Url
 
     public function __construct($url)
     {
-        $this->value = $url;
+        if(is_string($url))
+        {
+            $this->value = (object) parse_url($url);
+            $this->value->str = $url;
+        }
+        elseif(is_array($url) || is_object($url))
+        {
+            $arr_keys = array_slice(self::$arr_parts, 0, 8);
+
+            if(is_object($url))
+            {
+                $url = (array) $url;
+            }
+
+            foreach($url as $k => $v)
+            {
+                if(!in_array($k, $arr_keys))
+                {
+                    unset($url[$k]);
+                }
+            }
+
+            if(count($url))
+            {
+                $this->value = (object) $url;
+                $this->value->str = $this->_build();
+            }
+        }
+
     }
 
 
     protected function _scheme()
     {
-        return parse_url($this->value, PHP_URL_SCHEME);
+        return $this->value->scheme ? $this->value->scheme : null;
     }
     
     protected function _host()
     {
-        return parse_url($this->value, PHP_URL_HOST);
+        return $this->value->host ? $this->value->host : null;
     }
     
     protected function _port()
     {
-        return parse_url($this->value, PHP_URL_PORT);
+        return $this->value->port ? $this->value->port : null;
     }
     
     protected function _user()
     {
-        return parse_url($this->value, PHP_URL_USER);
+        return $this->value->user ? $this->value->user : null;
     }
     
     protected function _pass()
     {
-        return parse_url($this->value, PHP_URL_PASS);
+        return $this->value->pass ? $this->value->pass : null;
     }
     
     protected function _path()
     {
-        return parse_url($this->value, PHP_URL_PATH);
+        return $this->value->path ? new Path($this->value->path) : null;
     }
     
     protected function _query()
     {
-        return parse_url($this->value, PHP_URL_QUERY);
+        return $this->value->query ? new Query($this->value->query) : null;
     }
     
     protected function _fragment()
     {
-        return parse_url($this->value, PHP_URL_FRAGMENT);
+        return $this->value->fragment ? $this->value->fragment : null;
     }
 
     protected function _anchor()
     {
         return $this->_fragment();
     }
+
+
+
 
     protected function _credential()
     {
@@ -113,7 +144,7 @@ class Url
             $out = new \stdClass();
             $out->user = $this->_user();
             $out->pass = $this->_pass();
-            $out->str = sprintf('%s:%s', $out->user, $out->pass);
+            $out->str = $out->user . ($out->pass ? ':'. $out->pass : '');
 
             return $out;
         }
@@ -121,8 +152,48 @@ class Url
         return null;
     }
 
+
+
+
+    protected function _build()
+    {
+        $arr = array();
+        
+        if($this->_scheme())
+        {
+            $arr[] = $this->_scheme() . '://';
+        }
+
+        if($this->_credential())
+        {
+            $arr[] = $this->_credential().'@';
+        }
+
+        $arr[] = $this->_host();
+        
+        if($this->_port())
+        {
+            $arr[] = ':' . $this->_port();
+        }
+
+        $arr[] = $this->_path();
+
+        if($this->_query())
+        {
+            $arr[] = '?' . $this->_query();
+        }
+
+        if($this->_fragment())
+        {
+            $arr[] = '#' . $this->_fragment();
+        }
+
+        return implode('', $arr);
+    }
+
+
     public function __toString()
     {
-        return $this->value;
+        return $this->value->str;
     }
 }

@@ -101,4 +101,27 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->path->clear();
         $this->assertEquals('http://username:password@hostname:8080?arg=value#anchor', "$u");
     }
+    
+    public function testSettingCredentialsShouldSuccess()
+    {
+        $u = new Url('http://hostname:8080/path?arg=value#anchor');
+        $u->credential->user = 'username';
+        $u->credential->pass = 'password';
+
+        $this->assertEquals('http://username:password@hostname:8080/path?arg=value#anchor', "$u");
+        $u = new Url('http://hostname:8080/path?arg=value#anchor');
+        $u->credential->user = 'username';
+
+        $this->assertEquals('http://username@hostname:8080/path?arg=value#anchor', "$u");
+        
+        $u = new Url('http://hostname:8080/path?arg=value#anchor');
+        $u->credential->user('username');
+        $u->credential->pass('password');
+
+        $this->assertEquals('http://username:password@hostname:8080/path?arg=value#anchor', "$u");
+        $u = new Url('http://hostname:8080/path?arg=value#anchor');
+        $u->credential->user('username');
+
+        $this->assertEquals('http://username@hostname:8080/path?arg=value#anchor', "$u");
+    }
 }

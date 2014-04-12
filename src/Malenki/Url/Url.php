@@ -220,6 +220,7 @@ class Url
 
     public function __toString()
     {
+        $this->value->str = $this->_build();
         return $this->value->str;
     }
 }

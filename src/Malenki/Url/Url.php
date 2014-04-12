@@ -101,6 +101,16 @@ class Url
             {
                 $this->value->$k = null;
             }
+
+            if($k == 'path')
+            {
+                $this->value->path = new Path($this->value->path);
+            }
+
+            if($k == 'query')
+            {
+                $this->value->query = new Query($this->value->query);
+            }
         }
     }
 
@@ -132,12 +142,12 @@ class Url
     
     protected function _path()
     {
-        return $this->value->path ? new Path($this->value->path) : null;
+        return $this->value->path;
     }
     
     protected function _query()
     {
-        return $this->value->query ? new Query($this->value->query) : null;
+        return $this->value->query;
     }
     
     protected function _fragment()

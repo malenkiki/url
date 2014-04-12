@@ -35,6 +35,11 @@ class Path extends \Malenki\Bah\A
             $arr= explode('/', trim($arr, '/'));
         }
 
+        if(is_null($arr))
+        {
+            $arr = array();
+        }
+
         parent::__construct($arr);
     }
 

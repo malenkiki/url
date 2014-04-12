@@ -57,14 +57,14 @@ class Url
 
     public function __construct($url)
     {
+        $arr_keys = array_slice(self::$arr_parts, 0, 8);
+
         if(is_string($url))
         {
             $this->value = (object) parse_url($url);
-            $this->value->str = $url;
         }
         elseif(is_array($url) || is_object($url))
         {
-            $arr_keys = array_slice(self::$arr_parts, 0, 8);
 
             if(is_object($url))
             {
@@ -82,10 +82,26 @@ class Url
             if(count($url))
             {
                 $this->value = (object) $url;
-                $this->value->str = $this->_build();
             }
         }
 
+        
+        $this->_ensureKeys();
+        $this->value->str = $this->_build();
+    }
+
+
+    protected function _ensureKeys()
+    {
+        $arr_keys = array_slice(self::$arr_parts, 0, 8);
+
+        foreach($arr_keys as $k)
+        {
+            if(!isset($this->value->$k))
+            {
+                $this->value->$k = null;
+            }
+        }
     }
 
 
@@ -139,7 +155,7 @@ class Url
 
     protected function _credential()
     {
-        if($this->_user() && $this->_path())
+        if($this->_user())
         {
             $out = new \stdClass();
             $out->user = $this->_user();
@@ -166,7 +182,7 @@ class Url
 
         if($this->_credential())
         {
-            $arr[] = $this->_credential().'@';
+            $arr[] = $this->_credential()->str.'@';
         }
 
         $arr[] = $this->_host();

@@ -33,6 +33,16 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Malenki\Url\Url', $u);
     }
 
+    public function testInstanciateWithArrayShouldSuccess()
+    {
+        $arr = array();
+        $arr['scheme'] = 'https';
+        $arr['host'] = 'github.com';
+        $arr['path'] = '/malenkiki/url';
+        $u = new Url($arr);
+        $this->assertInstanceOf('\Malenki\Url\Url', $u);
+    }
+
     public function testGettingAllPartShouldSuccess()
     {
         $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');

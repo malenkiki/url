@@ -136,8 +136,23 @@ class Query implements \Countable
         return $this->count() == 0;
     }
 
+
+    public function clear()
+    {
+        $this->arr = array();
+
+        return $this;
+    }
+
     public function __toString()
     {
-        return http_build_query($this->arr);
+        if(count($this->arr))
+        {
+            return http_build_query($this->arr);
+        }
+        else
+        {
+            return '';
+        }
     }
 }

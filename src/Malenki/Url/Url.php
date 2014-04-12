@@ -204,7 +204,7 @@ class Url
 
         $arr[] = $this->_path();
 
-        if($this->_query())
+        if(!$this->_query()->isVoid())
         {
             $arr[] = '?' . $this->_query();
         }

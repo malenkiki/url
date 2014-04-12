@@ -69,7 +69,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('anchor', $u->anchor);
         $this->assertEquals('username', $u->credential->user);
         $this->assertEquals('password', $u->credential->pass);
-        $this->assertEquals('username:password', $u->credential->str);
+        $this->assertEquals('username:password', $u->credential);
     }
 
     public function testAddingArgShouldSuccess()

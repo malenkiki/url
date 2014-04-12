@@ -41,6 +41,7 @@ class Url
     );
 
     protected $value = null;
+    protected $credential = null;
 
 
 
@@ -112,6 +113,14 @@ class Url
                 $this->value->query = new Query($this->value->query);
             }
         }
+        
+        if(!$this->credential)
+        {
+            $this->credential = new Credential();
+        }
+
+        $this->credential->user = $this->value->user;
+        $this->credential->pass = $this->value->pass;
     }
 
 
@@ -165,17 +174,9 @@ class Url
 
     protected function _credential()
     {
-        if($this->_user())
-        {
-            $out = new \stdClass();
-            $out->user = $this->_user();
-            $out->pass = $this->_pass();
-            $out->str = $out->user . ($out->pass ? ':'. $out->pass : '');
-
-            return $out;
-        }
-
-        return null;
+        $this->credential->user = $this->_user();
+        $this->credential->pass = $this->_pass();
+        return $this->credential;
     }
 
 
@@ -190,9 +191,9 @@ class Url
             $arr[] = $this->_scheme() . '://';
         }
 
-        if($this->_credential())
+        if(!$this->_credential()->isVoid())
         {
-            $arr[] = $this->_credential()->str.'@';
+            $arr[] = $this->_credential().'@';
         }
 
         $arr[] = $this->_host();

@@ -68,4 +68,16 @@ class CredentialTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('S0m3tH1n9', $c->pass);
         $this->assertEquals('malenki:S0m3tH1n9', "$c");
     }
+
+    public function testIfCredentialIsVoidOrNotShouldSuccess()
+    {
+        $c = new Credential();
+        $this->assertTrue($c->isVoid());
+        $c->user = 'somebody';
+        $this->assertFalse($c->isVoid());
+        $c->pass = 'pA5sW0rd';
+        $this->assertFalse($c->isVoid());
+        $c->clear();
+        $this->assertTrue($c->isVoid());
+    }
 }

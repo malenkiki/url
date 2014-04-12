@@ -84,6 +84,11 @@ class Credential
     }
 
 
+    public function isVoid()
+    {
+        return is_null($this->user) && is_null($this->pass);
+    }
+
     public function clear()
     {
         $this->user = null;

@@ -79,4 +79,19 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->query->arg3 = 'value3';
         $this->assertEquals('http://username:password@hostname:8080/path?arg=value&arg2=value2&arg3=value3#anchor', "$u");
     }
+    
+    public function testAddingPathShouldSuccess()
+    {
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $u->path->add('something');
+        $u->path->add('other');
+        $this->assertEquals('http://username:password@hostname:8080/path/something/other?arg=value#anchor', "$u");
+    }
+    
+    public function testResetPathShouldSuccess()
+    {
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $u->path->clear();
+        $this->assertEquals('http://username:password@hostname:8080?arg=value#anchor', "$u");
+    }
 }

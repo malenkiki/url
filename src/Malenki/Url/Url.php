@@ -57,7 +57,7 @@ class Url
 
     public function __set($name, $value)
     {
-        if(in_array($name, array('scheme')))
+        if(in_array($name, array('scheme', 'host')))
         {
             $method = '_' . $name;
             $this->$method($value);
@@ -161,8 +161,18 @@ class Url
         return $this->value->scheme ? $this->value->scheme : null;
     }
     
-    protected function _host()
+    protected function _host($str = null)
     {
+        if(is_string($str))
+        {
+            $str = trim($str);
+
+            if(strlen($str))
+            {
+                $this->value->host = $str;
+            }
+        }
+
         return $this->value->host ? $this->value->host : null;
     }
     

@@ -199,4 +199,13 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->scheme = 'ftp://';
         $this->assertEquals('ftp://hostname:8080/path#anchor', "$u");
     }
+    
+    public function testSettingHostnameShouldSuccess()
+    {
+        $u = new Url('https://hostname:8080/path#anchor');
+        $u->host = 'www.example.org';
+        $this->assertEquals('https://www.example.org:8080/path#anchor', "$u");
+        $u->host = 'localhost';
+        $this->assertEquals('https://localhost:8080/path#anchor', "$u");
+    }
 }

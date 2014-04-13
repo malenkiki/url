@@ -43,5 +43,9 @@ class PathTest extends PHPUnit_Framework_TestCase
         $p = new Path('/foo/');
         $p->add('/bar/')->add('/thing/');
         $this->assertEquals('/foo/bar/thing', "$p");
+        $p = new Path('/foo/');
+        $q = new Path('/bar/thing');
+        $p->merge($q);
+        $this->assertEquals('/foo/bar/thing', "$p");
     }
 }

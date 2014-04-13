@@ -35,7 +35,7 @@ class Path extends \Malenki\Bah\A
             return $this->clear();
         }
 
-        return parent::_get();
+        return parent::__get($name);
     }
 
     public function __construct($arr = array())
@@ -48,6 +48,11 @@ class Path extends \Malenki\Bah\A
         if(is_null($arr))
         {
             $arr = array();
+        }
+
+        if($arr instanceof Path)
+        {
+            $arr = $arr->array;
         }
 
         parent::__construct($arr);
@@ -63,6 +68,14 @@ class Path extends \Malenki\Bah\A
         return $this;
     }
 
+    public function merge($arr)
+    {
+        $a = new self($arr);
+
+        $this->value = parent::merge($a)->array;
+
+        return $this;
+    }
 
     public function clear()
     {

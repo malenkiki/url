@@ -102,6 +102,13 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://username:password@hostname:8080?arg=value#anchor', "$u");
     }
     
+    public function testSettingChainingPathShouldSuccess()
+    {
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $u->path('something/other')->path('again');
+        $this->assertEquals('http://username:password@hostname:8080/path/something/other/again?arg=value#anchor', "$u");
+    }
+    
     
     public function testResetCredentialsShouldSuccess()
     {

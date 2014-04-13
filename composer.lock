@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/malenkiki/bah.git",
-                "reference": "df6cccd305d12b03e15050bb62947dc71ee6e248"
+                "reference": "8b7f6097b3aea755edcb6d57d768227040377b4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/malenkiki/bah/zipball/df6cccd305d12b03e15050bb62947dc71ee6e248",
-                "reference": "df6cccd305d12b03e15050bb62947dc71ee6e248",
+                "url": "https://api.github.com/repos/malenkiki/bah/zipball/8b7f6097b3aea755edcb6d57d768227040377b4f",
+                "reference": "8b7f6097b3aea755edcb6d57d768227040377b4f",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 "number",
                 "string"
             ],
-            "time": "2014-04-11 16:05:16"
+            "time": "2014-04-13 16:38:58"
         }
     ],
     "packages-dev": [

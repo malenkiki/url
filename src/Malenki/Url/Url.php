@@ -236,6 +236,15 @@ class Url
         return $this->value->path;
     }
     
+    public function path($path)
+    {
+        $p = new Path($path);
+
+        $this->value->path = $this->value->path->merge($p);
+
+        return $this;
+    }
+
     protected function _query()
     {
         return $this->value->query;

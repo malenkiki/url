@@ -191,8 +191,6 @@ class Url
 
     protected function _credential()
     {
-        $this->credential->user = $this->_user();
-        $this->credential->pass = $this->_pass();
         return $this->credential;
     }
 

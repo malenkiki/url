@@ -36,6 +36,11 @@ class Credential
         {
             return $this->$name;
         }
+
+        if($name == 'clear')
+        {
+            return $this->clear();
+        }
     }
 
     public function __set($name, $value)

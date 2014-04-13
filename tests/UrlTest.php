@@ -208,4 +208,13 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->host = 'localhost';
         $this->assertEquals('https://localhost:8080/path#anchor', "$u");
     }
+    
+    public function testSettingPortShouldSuccess()
+    {
+        $u = new Url('https://hostname/path#anchor');
+        $u->port = 8080;
+        $this->assertEquals('https://hostname:8080/path#anchor', "$u");
+        $u->port = '1234';
+        $this->assertEquals('https://hostname:1234/path#anchor', "$u");
+    }
 }

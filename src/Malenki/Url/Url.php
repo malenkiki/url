@@ -57,7 +57,7 @@ class Url
 
     public function __set($name, $value)
     {
-        if(in_array($name, array('scheme', 'host')))
+        if(in_array($name, array('scheme', 'host', 'port')))
         {
             $method = '_' . $name;
             $this->$method($value);
@@ -176,8 +176,14 @@ class Url
         return $this->value->host ? $this->value->host : null;
     }
     
-    protected function _port()
+    protected function _port($num = null)
     {
+        if(is_numeric($num))
+        {
+            $num = (integer) trim($num);
+            $this->value->port = $num;
+        }
+
         return $this->value->port ? $this->value->port : null;
     }
     

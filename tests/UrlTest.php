@@ -322,4 +322,21 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $u->port);
         $this->assertEquals(null, $u->port->get());
     }
+    
+    //TODO What about avoiding fragment?
+    public function testSettingAnchorShouldSuccess()
+    {
+        $u = new Url('https://hostname/path#anchor');
+        $u->anchor = 'something';
+        $this->assertEquals('https://hostname/path#something', "$u");
+        $u->fragment = 'other';
+        $this->assertEquals('https://hostname/path#other', "$u");
+    }
+    
+    public function testGettingAnchorShouldSuccess()
+    {
+        $u = new Url('https://hostname/path#anchor');
+        $this->assertEquals('anchor', $u->anchor);
+        $this->assertEquals('anchor', $u->fragment);
+    }
 }

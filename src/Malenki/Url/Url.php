@@ -57,7 +57,7 @@ class Url
 
     public function __set($name, $value)
     {
-        if(in_array($name, array('scheme', 'host', 'user', 'pass')))
+        if(in_array($name, array('scheme', 'host', 'user', 'pass', 'anchor', 'fragment')))
         {
             $method = '_' . $name;
             $this->$method($value);
@@ -254,14 +254,19 @@ class Url
         return $this->value->query;
     }
     
-    protected function _fragment()
+    protected function _fragment($str = null)
     {
+        if($str)
+        {
+            $this->value->fragment = (string) $str;
+        }
+
         return $this->value->fragment ? $this->value->fragment : null;
     }
 
-    protected function _anchor()
+    protected function _anchor($str = null)
     {
-        return $this->_fragment();
+        return $this->_fragment($str);
     }
 
 
@@ -291,7 +296,7 @@ class Url
 
         $arr[] = $this->_host();
         
-        if($this->_port())
+        if(!$this->_port()->isVoid())
         {
             $arr[] = ':' . $this->_port();
         }

@@ -128,4 +128,33 @@ class UrlTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('http://username@hostname:8080/path?arg=value#anchor', "$u");
     }
+
+
+    public function testSettingPathShouldSuccess()
+    {
+        $u = new Url('http://hostname:8080?arg=value#anchor');
+        $u->path = 'branch/leaf';
+
+        $this->assertEquals('http://hostname:8080/branch/leaf?arg=value#anchor', "$u");
+        
+        $u = new Url('http://hostname:8080?arg=value#anchor');
+        $u->path->add('branch');
+        $u->path->add('leaf');
+
+        $this->assertEquals('http://hostname:8080/branch/leaf?arg=value#anchor', "$u");
+
+        $u->path->clear();
+        
+        $this->assertEquals('http://hostname:8080?arg=value#anchor', "$u");
+        
+        $u->path = 'other';
+
+        $this->assertEquals('http://hostname:8080/other?arg=value#anchor', "$u");
+
+        $u->path->clear()->add('another');
+        $this->assertEquals('http://hostname:8080/another?arg=value#anchor', "$u");
+
+        $u->path->clear->add('something');
+        $this->assertEquals('http://hostname:8080/something?arg=value#anchor', "$u");
+    }
 }

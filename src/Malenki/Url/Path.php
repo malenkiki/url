@@ -28,6 +28,16 @@ namespace Malenki\Url;
 
 class Path extends \Malenki\Bah\A
 {
+    public function __get($name)
+    {
+        if($name == 'clear')
+        {
+            return $this->clear();
+        }
+
+        return parent::_get();
+    }
+
     public function __construct($arr = array())
     {
         if(is_string($arr))

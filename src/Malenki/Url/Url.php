@@ -61,6 +61,11 @@ class Url
         {
             $this->credential = new Credential($value);
         }
+
+        if($name == 'path')
+        {
+            $this->value->path = new Path($value);
+        }
     }
 
     public function __construct($url)

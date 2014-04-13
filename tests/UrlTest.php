@@ -186,4 +186,17 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->query->add('some', 'thing');
         $this->assertEquals('http://hostname:8080/path?bar=foo&some=thing#anchor', "$u");
     }
+
+    public function testSettingSchemeShouldSuccess()
+    {
+        $u = new Url('http://hostname:8080/path#anchor');
+        $u->scheme = 'https';
+        $this->assertEquals('https://hostname:8080/path#anchor', "$u");
+        $u->scheme = 'ftp';
+        $this->assertEquals('ftp://hostname:8080/path#anchor', "$u");
+        $u->scheme = 'https://';
+        $this->assertEquals('https://hostname:8080/path#anchor', "$u");
+        $u->scheme = 'ftp://';
+        $this->assertEquals('ftp://hostname:8080/path#anchor', "$u");
+    }
 }

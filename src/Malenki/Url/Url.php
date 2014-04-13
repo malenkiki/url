@@ -57,6 +57,12 @@ class Url
 
     public function __set($name, $value)
     {
+        if(in_array($name, array('scheme')))
+        {
+            $method = '_' . $name;
+            $this->$method($value);
+        }
+
         if($name == 'credential')
         {
             $this->credential = new Credential($value);
@@ -141,8 +147,17 @@ class Url
     }
 
 
-    protected function _scheme()
+    protected function _scheme($str = null)
     {
+        if(is_string($str))
+        {
+            $str = preg_replace('/[^a-z]+/' , '', $str);
+
+            if(strlen($str))
+            {
+                $this->value->scheme = $str;
+            }
+        }
         return $this->value->scheme ? $this->value->scheme : null;
     }
     

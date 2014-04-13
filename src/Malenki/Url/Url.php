@@ -57,7 +57,7 @@ class Url
 
     public function __set($name, $value)
     {
-        if(in_array($name, array('scheme', 'host', 'port')))
+        if(in_array($name, array('scheme', 'host', 'port', 'user', 'pass')))
         {
             $method = '_' . $name;
             $this->$method($value);
@@ -198,14 +198,37 @@ class Url
         return $this->value->port ? $this->value->port : null;
     }
     
-    protected function _user()
+    protected function _user($str = null)
     {
-        return $this->value->user ? $this->value->user : null;
+        if($str)
+        {
+            $this->credential->user = $str;
+        }
+
+        return $this->credential->user;
     }
     
-    protected function _pass()
+    protected function _pass($str = null)
     {
-        return $this->value->pass ? $this->value->pass : null;
+        if($str)
+        {
+            $this->credential->pass = $str;
+        }
+
+        return $this->credential->pass;
+    }
+
+
+    public function user($str)
+    {
+        $this->_user($str);
+        return $this;
+    }
+
+    public function pass($str)
+    {
+        $this->_pass($str);
+        return $this;
     }
     
     protected function _path()

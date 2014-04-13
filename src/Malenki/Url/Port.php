@@ -90,6 +90,11 @@ class Port
         return $this->value;
     }
 
+    public function isVoid()
+    {
+        return is_null($this->value);
+    }
+
     public function clear()
     {
         $this->value = null;

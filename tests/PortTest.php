@@ -54,8 +54,10 @@ class PortTest extends PHPUnit_Framework_TestCase
     {
         $p = new Port('1234');
         $this->assertEquals('1234', "$p");
+        $this->assertEquals(1234, $p->get());
         $p = new Port(8080);
         $this->assertEquals('8080', "$p");
+        $this->assertEquals(8080, $p->get());
     }
 
     public function testSettingValueShouldSuccess()
@@ -110,5 +112,13 @@ class PortTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($p->isSystem());
         $this->assertFalse($p->isRegistered());
         $this->assertTrue($p->isDpe());
+    }
+
+    public function testClearingValueShouldSuccess()
+    {
+        $p = new Port(80);
+        $p->clear();
+        $this->assertTrue($p->isVoid());
+        $this->assertEquals('', "$p");
     }
 }

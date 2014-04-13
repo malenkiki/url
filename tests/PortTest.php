@@ -104,14 +104,23 @@ class PortTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($p->isSystem());
         $this->assertFalse($p->isRegistered());
         $this->assertFalse($p->isDpe());
+        $this->assertTrue($p->system);
+        $this->assertFalse($p->registered);
+        $this->assertFalse($p->dpe);
         $p = new Port(8080);
         $this->assertFalse($p->isSystem());
         $this->assertTrue($p->isRegistered());
         $this->assertFalse($p->isDpe());
+        $this->assertFalse($p->system);
+        $this->assertTrue($p->registered);
+        $this->assertFalse($p->dpe);
         $p = new Port(49153);
         $this->assertFalse($p->isSystem());
         $this->assertFalse($p->isRegistered());
         $this->assertTrue($p->isDpe());
+        $this->assertFalse($p->system);
+        $this->assertFalse($p->registered);
+        $this->assertTrue($p->dpe);
     }
 
     public function testClearingValueShouldSuccess()
@@ -120,5 +129,11 @@ class PortTest extends PHPUnit_Framework_TestCase
         $p->clear();
         $this->assertTrue($p->isVoid());
         $this->assertEquals('', "$p");
+        $this->assertEquals(null, $p->get());
+        $p = new Port(80);
+        $p->clear->set(123);
+        $this->assertFalse($p->isVoid());
+        $this->assertEquals('123', "$p");
+        $this->assertEquals(123, $p->get());
     }
 }

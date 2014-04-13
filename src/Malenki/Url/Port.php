@@ -30,6 +30,20 @@ class Port
 {
     protected $value = null;
 
+    public function __get($name)
+    {
+        if($name == 'clear')
+        {
+            return $this->clear();
+        }
+
+        if(in_array($name, array('system', 'registered', 'dpe')))
+        {
+            $method = 'is'. ucfirst($name);
+            return $this->$method();
+        }
+    }
+
     public function __construct($n = null)
     {
         if($n)

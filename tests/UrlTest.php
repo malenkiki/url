@@ -62,7 +62,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('username', $u->user);
         $this->assertEquals('password', $u->pass);
         $this->assertEquals('hostname', $u->host);
-        $this->assertEquals(8080, $u->port);
+        $this->assertEquals('8080', $u->port);
         $this->assertEquals('/path', $u->path);
         $this->assertEquals('arg=value', $u->query);
         $this->assertEquals('anchor', $u->fragment);
@@ -277,5 +277,49 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('https://hostname:8080/path#anchor', "$u");
         $u->port = '1234';
         $this->assertEquals('https://hostname:1234/path#anchor', "$u");
+        $u = new Url('https://hostname/path#anchor');
+        $u->port->set(8080);
+        $this->assertEquals('https://hostname:8080/path#anchor', "$u");
+        $u->port->set('1234');
+        $this->assertEquals('https://hostname:1234/path#anchor', "$u");
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSettingNegativePortShouldFail()
+    {
+        $u = new Url('https://hostname/path#anchor');
+        $u->port = -8080;
+    }
+
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSettingTooBigPortShouldFail()
+    {
+        $u = new Url('https://hostname/path#anchor');
+        $u->port = 65536;
+    }
+
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSettingNotNumericPortShouldFail()
+    {
+        $u = new Url('https://hostname/path#anchor');
+        $u->port = 'azerty';
+    }
+
+    public function testGettingPortShouldSuccess()
+    {
+        $u = new Url('https://hostname:8080/path#anchor');
+        $this->assertEquals('8080', $u->port);
+        $this->assertEquals(8080, $u->port->get());
+        $u = new Url('https://hostname/path#anchor');
+        $this->assertEquals('', $u->port);
+        $this->assertEquals(null, $u->port->get());
     }
 }

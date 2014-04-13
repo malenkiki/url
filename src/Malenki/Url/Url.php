@@ -57,7 +57,7 @@ class Url
 
     public function __set($name, $value)
     {
-        if(in_array($name, array('scheme', 'host', 'port', 'user', 'pass')))
+        if(in_array($name, array('scheme', 'host', 'user', 'pass')))
         {
             $method = '_' . $name;
             $this->$method($value);
@@ -66,6 +66,11 @@ class Url
         if($name == 'credential')
         {
             $this->credential = new Credential($value);
+        }
+
+        if($name == 'port')
+        {
+            $this->value->port = new Port($value);
         }
 
         if($name == 'path')
@@ -131,6 +136,11 @@ class Url
                 $this->value->path = new Path($this->value->path);
             }
 
+            if($k == 'port')
+            {
+                $this->value->port = new Port($this->value->port);
+            }
+
             if($k == 'query')
             {
                 $this->value->query = new Query($this->value->query);
@@ -189,13 +199,7 @@ class Url
     
     protected function _port($num = null)
     {
-        if(is_numeric($num))
-        {
-            $num = (integer) trim($num);
-            $this->value->port = $num;
-        }
-
-        return $this->value->port ? $this->value->port : null;
+        return $this->value->port;
     }
     
     protected function _user($str = null)

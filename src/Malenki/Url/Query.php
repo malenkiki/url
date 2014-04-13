@@ -33,6 +33,11 @@ class Query implements \Countable
 
     public function __get($name)
     {
+        if($name == 'clear')
+        {
+            return $this->clear();
+        }
+
         return $this->get($name);
     }
 

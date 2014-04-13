@@ -157,4 +157,22 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->path->clear->add('something');
         $this->assertEquals('http://hostname:8080/something?arg=value#anchor', "$u");
     }
+    
+    public function testSettingQueryShouldSuccess()
+    {
+        $u = new Url('http://hostname:8080/path#anchor');
+        $u->query = 'foo=bar';
+        $this->assertEquals('http://hostname:8080/path?foo=bar#anchor', "$u");
+        $u->query->clear();
+        $u->query = '?foo=bar';
+        $this->assertEquals('http://hostname:8080/path?foo=bar#anchor', "$u");
+        $u->query->clear()->set('bar', 'foo');
+        $this->assertEquals('http://hostname:8080/path?bar=foo#anchor', "$u");
+        $u->query->clear->set('bar', 'foo');
+        $this->assertEquals('http://hostname:8080/path?bar=foo#anchor', "$u");
+        $u->query->clear->add('bar', 'foo');
+        $this->assertEquals('http://hostname:8080/path?bar=foo#anchor', "$u");
+        $u->query->add('some', 'thing');
+        $this->assertEquals('http://hostname:8080/path?bar=foo&some=thing#anchor', "$u");
+    }
 }

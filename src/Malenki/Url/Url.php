@@ -66,6 +66,11 @@ class Url
         {
             $this->value->path = new Path($value);
         }
+
+        if($name == 'query')
+        {
+            $this->value->query = new Query($value);
+        }
     }
 
     public function __construct($url)

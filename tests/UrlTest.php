@@ -190,6 +190,8 @@ class UrlTest extends PHPUnit_Framework_TestCase
     public function testSettingSchemeShouldSuccess()
     {
         $u = new Url('http://hostname:8080/path#anchor');
+        $u->scheme = 'HTTPS';
+        $this->assertEquals('https://hostname:8080/path#anchor', "$u");
         $u->scheme = 'https';
         $this->assertEquals('https://hostname:8080/path#anchor', "$u");
         $u->scheme = 'ftp';
@@ -198,8 +200,29 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('https://hostname:8080/path#anchor', "$u");
         $u->scheme = 'ftp://';
         $this->assertEquals('ftp://hostname:8080/path#anchor', "$u");
+        $u->scheme = 'svn+ssh';
+        $this->assertEquals('svn+ssh://hostname:8080/path#anchor', "$u");
     }
     
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSettingSchemeStartingWithNumberShouldFail()
+    {
+        $u = new Url('http://hostname:8080/path#anchor');
+        $u->scheme = '9https';
+    }
+    
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSettingSchemeHavingBagCharsShouldFail()
+    {
+        $u = new Url('http://hostname:8080/path#anchor');
+        $u->scheme = 'https_écrit';
+    }
+
+
     public function testSettingHostnameShouldSuccess()
     {
         $u = new Url('https://hostname:8080/path#anchor');

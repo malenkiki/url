@@ -151,14 +151,18 @@ class Url
     {
         if(is_string($str))
         {
-            $str = preg_replace('/[^a-z]+/' , '', $str);
+            $str = preg_replace('@.//$@' , '', $str);
 
-            if(strlen($str))
+            if(strlen($str) && preg_match('/^[a-z]{1}[a-z0-9\+\.\-]+$/i', $str))
             {
                 $this->value->scheme = $str;
             }
+            else
+            {
+                throw new \InvalidArgumentException('Invalid scheme name!');
+            }
         }
-        return $this->value->scheme ? $this->value->scheme : null;
+        return $this->value->scheme ? strtolower($this->value->scheme) : null;
     }
     
     protected function _host($str = null)

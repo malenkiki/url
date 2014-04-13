@@ -209,6 +209,25 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('https://localhost:8080/path#anchor', "$u");
     }
     
+    
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSettingHostnameWithPartGreaterThan63ShouldFail()
+    {
+        $u = new Url('https://hostname:8080/path#anchor');
+        $u->host = 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz';
+    }
+    
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSettingHostnameBiggerThan255ShouldFail()
+    {
+        $u = new Url('https://hostname:8080/path#anchor');
+        $u->host = 'abcdefghijklmnopqrstuvwxyz01234-abcdefghijklmnopqrstuvwxyztoo-big.abcdefghijklmnopqrstuvwxyz01234-abcdefghijklmnopqrstuvwxyz01234.fr';
+    }
+
     public function testSettingPortShouldSuccess()
     {
         $u = new Url('https://hostname/path#anchor');

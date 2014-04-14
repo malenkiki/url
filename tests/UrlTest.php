@@ -323,6 +323,15 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(null, $u->port->get());
     }
     
+    public function testSettingPortInChainContextShouldSuccess()
+    {
+        $u = new Url('https://hostname/path#anchor');
+        $this->assertInstanceOf('\Malenki\Url\Url', $u->port(8080));
+        $this->assertInstanceOf('\Malenki\Url\Url', $u->port('1234'));
+        $this->assertEquals('https://hostname:8080/path#anchor', $u->port(8080));
+        $this->assertEquals('https://hostname:1234/path#anchor', $u->port('1234'));
+    }
+
     public function testSettingAnchorShouldSuccess()
     {
         $u = new Url('https://hostname/path#anchor');
@@ -335,8 +344,20 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('https://hostname/path#something', "$u");
         $u->fragment->set('other');
         $this->assertEquals('https://hostname/path#other', "$u");
+        $u = new Url('https://hostname/path#anchor');
+        $u->anchor('something');
+        $this->assertEquals('https://hostname/path#something', "$u");
+        $u->fragment('other');
+        $this->assertEquals('https://hostname/path#other', "$u");
     }
     
+    public function testSettingChainingAnchorShouldSuccess()
+    {
+        $u = new Url('https://hostname/path#anchor');
+        $this->assertInstanceOf('\Malenki\Url\Url', $u->anchor('something'));
+        $this->assertInstanceOf('\Malenki\Url\Url', $u->fragment('other'));
+    }
+
     public function testGettingAnchorShouldSuccess()
     {
         $u = new Url('https://hostname/path#anchor');
@@ -358,5 +379,12 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u = new Url('https://hostname/path');
         $this->assertTrue($u->anchor->isVoid());
         $this->assertTrue($u->fragment->isVoid());
+    }
+
+    public function testClearFeatureOfUrlClassShouldSuccess()
+    {
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $u->clear();
+        $this->assertEquals('http://hostname', "$u");
     }
 }

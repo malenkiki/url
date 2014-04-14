@@ -207,7 +207,7 @@ class Url
         return $this->value->host ? $this->value->host : null;
     }
     
-    protected function _port($num = null)
+    protected function _port()
     {
         return $this->value->port;
     }
@@ -244,6 +244,13 @@ class Url
         $this->_pass($str);
         return $this;
     }
+
+    public function port($port)
+    {
+        $this->value->port->set($port);
+        return $this;
+    }
+
     
     protected function _path()
     {
@@ -274,6 +281,16 @@ class Url
         return $this->_fragment();
     }
 
+    public function fragment($str)
+    {
+        $this->value->fragment->set($str);
+        return $this;
+    }
+
+    public function anchor($str)
+    {
+        return $this->fragment($str);
+    }
 
 
 
@@ -283,6 +300,33 @@ class Url
     }
 
 
+    public function clear($part = null)
+    {
+        $arr_clearable = array('credential', 'port', 'path', 'query', 'anchor', 'fragment');
+
+        if(is_null($part))
+        {
+            foreach($arr_clearable as $p)
+            {
+                $method = '_'.$p;
+                $this->$method()->clear();
+            }
+
+            return $this;
+        }
+
+        if(in_array($part, $arr_clearable))
+        {
+            $method = '_'.$part;
+            $this->$method()->clear();
+        }
+        else
+        {
+            throw new \InvalidArgumentException('Bad part name to clear.');
+        }
+
+        return $this;
+    }
 
 
     protected function _build()

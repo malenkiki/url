@@ -323,13 +323,17 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(null, $u->port->get());
     }
     
-    //TODO What about avoiding fragment?
     public function testSettingAnchorShouldSuccess()
     {
         $u = new Url('https://hostname/path#anchor');
         $u->anchor = 'something';
         $this->assertEquals('https://hostname/path#something', "$u");
         $u->fragment = 'other';
+        $this->assertEquals('https://hostname/path#other', "$u");
+        $u = new Url('https://hostname/path#anchor');
+        $u->anchor->set('something');
+        $this->assertEquals('https://hostname/path#something', "$u");
+        $u->fragment->set('other');
         $this->assertEquals('https://hostname/path#other', "$u");
     }
     
@@ -338,5 +342,21 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u = new Url('https://hostname/path#anchor');
         $this->assertEquals('anchor', $u->anchor);
         $this->assertEquals('anchor', $u->fragment);
+        $this->assertEquals('anchor', $u->anchor->get());
+        $this->assertEquals('anchor', $u->fragment->get());
+    }
+
+    public function testAnchorIsVoidOrNotShouldSuccess()
+    {
+        $u = new Url('https://hostname/path#anchor');
+        $this->assertFalse($u->anchor->isVoid());
+        $this->assertFalse($u->fragment->isVoid());
+        $u->anchor->clear;
+        $this->assertTrue($u->anchor->isVoid());
+        $this->assertTrue($u->fragment->isVoid());
+        
+        $u = new Url('https://hostname/path');
+        $this->assertTrue($u->anchor->isVoid());
+        $this->assertTrue($u->fragment->isVoid());
     }
 }

@@ -57,7 +57,7 @@ class Url
 
     public function __set($name, $value)
     {
-        if(in_array($name, array('scheme', 'host', 'user', 'pass', 'anchor', 'fragment')))
+        if(in_array($name, array('scheme', 'host', 'user', 'pass')))
         {
             $method = '_' . $name;
             $this->$method($value);
@@ -81,6 +81,11 @@ class Url
         if($name == 'query')
         {
             $this->value->query = new Query($value);
+        }
+
+        if(in_array($name, array('anchor', 'fragment')))
+        {
+            $this->value->fragment = new Fragment($value);
         }
     }
 
@@ -144,6 +149,11 @@ class Url
             if($k == 'query')
             {
                 $this->value->query = new Query($this->value->query);
+            }
+
+            if($k == 'fragment')
+            {
+                $this->value->fragment = new Fragment($this->value->fragment);
             }
         }
         
@@ -254,19 +264,14 @@ class Url
         return $this->value->query;
     }
     
-    protected function _fragment($str = null)
+    protected function _fragment()
     {
-        if($str)
-        {
-            $this->value->fragment = (string) $str;
-        }
-
-        return $this->value->fragment ? $this->value->fragment : null;
+        return $this->value->fragment;
     }
 
-    protected function _anchor($str = null)
+    protected function _anchor()
     {
-        return $this->_fragment($str);
+        return $this->_fragment();
     }
 
 
@@ -308,7 +313,7 @@ class Url
             $arr[] = '?' . $this->_query();
         }
 
-        if($this->_fragment())
+        if(!$this->_fragment()->isVoid())
         {
             $arr[] = '#' . $this->_fragment();
         }

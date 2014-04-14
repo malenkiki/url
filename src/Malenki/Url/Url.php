@@ -184,7 +184,6 @@ class Url
         }
         return $this->value->scheme ? strtolower($this->value->scheme) : null;
     }
-    
     protected function _host($str = null)
     {
         if(is_string($str))
@@ -231,41 +230,11 @@ class Url
 
         return $this->credential->pass;
     }
-
-
-    public function user($str)
-    {
-        $this->_user($str);
-        return $this;
-    }
-
-    public function pass($str)
-    {
-        $this->_pass($str);
-        return $this;
-    }
-
-    public function port($port)
-    {
-        $this->value->port->set($port);
-        return $this;
-    }
-
     
     protected function _path()
     {
         return $this->value->path;
     }
-    
-    public function path($path)
-    {
-        $p = new Path($path);
-
-        $this->value->path = $this->value->path->merge($p);
-
-        return $this;
-    }
-
     protected function _query()
     {
         return $this->value->query;
@@ -281,51 +250,10 @@ class Url
         return $this->_fragment();
     }
 
-    public function fragment($str)
-    {
-        $this->value->fragment->set($str);
-        return $this;
-    }
-
-    public function anchor($str)
-    {
-        return $this->fragment($str);
-    }
-
-
 
     protected function _credential()
     {
         return $this->credential;
-    }
-
-
-    public function clear($part = null)
-    {
-        $arr_clearable = array('credential', 'port', 'path', 'query', 'anchor', 'fragment');
-
-        if(is_null($part))
-        {
-            foreach($arr_clearable as $p)
-            {
-                $method = '_'.$p;
-                $this->$method()->clear();
-            }
-
-            return $this;
-        }
-
-        if(in_array($part, $arr_clearable))
-        {
-            $method = '_'.$part;
-            $this->$method()->clear();
-        }
-        else
-        {
-            throw new \InvalidArgumentException('Bad part name to clear.');
-        }
-
-        return $this;
     }
 
 
@@ -363,6 +291,106 @@ class Url
         }
 
         return implode('', $arr);
+    }
+
+
+
+    public function scheme($str)
+    {
+        $this->_scheme($str);
+
+        return $this;
+    }
+    
+
+    public function credential($str)
+    {
+        $this->credential = new Credential($str);
+
+        return $this;
+    }
+
+    public function user($str)
+    {
+        $this->_user($str);
+        return $this;
+    }
+
+    public function pass($str)
+    {
+        $this->_pass($str);
+        return $this;
+    }
+
+
+    public function host($str)
+    {
+        $this->_host($str);
+
+        return $this;
+    }
+
+
+    public function port($port)
+    {
+        $this->value->port->set($port);
+        return $this;
+    }
+
+    
+    public function path($path)
+    {
+        $p = new Path($path);
+
+        $this->value->path = $this->value->path->merge($p);
+
+        return $this;
+    }
+
+    public function query($q)
+    {
+        $this->value->query = $this->value->query->merge($q);
+
+        return $this;
+    }
+
+    public function fragment($str)
+    {
+        $this->value->fragment->set($str);
+        return $this;
+    }
+
+    public function anchor($str)
+    {
+        return $this->fragment($str);
+    }
+
+    public function clear($part = null)
+    {
+        $arr_clearable = array('credential', 'port', 'path', 'query', 'anchor', 'fragment');
+
+        if(is_null($part))
+        {
+            foreach($arr_clearable as $p)
+            {
+                $method = '_'.$p;
+                $this->$method()->clear();
+            }
+
+            return $this;
+        }
+
+        if(in_array($part, $arr_clearable))
+        {
+            $method = '_'.$part;
+            $this->$method()->clear();
+        }
+        else
+        {
+            throw new \InvalidArgumentException('Bad part name to clear.');
+        }
+
+        return $this;
     }
 
 

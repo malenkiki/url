@@ -142,6 +142,12 @@ class Query implements \Countable
     }
 
 
+    public function merge($arr)
+    {
+        return new self(array_merge($this->arr, $arr));
+    }
+
+
     public function clear()
     {
         $this->arr = array();

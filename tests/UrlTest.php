@@ -387,4 +387,10 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->clear();
         $this->assertEquals('http://hostname', "$u");
     }
+
+    public function testChainingAllFeaturesShouldSuccess()
+    {
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $this->assertEquals('https://login:pwd@example.org:123/path/other/way?arg=value&foo=bar#something', (string) $u->scheme('https')->user('login')->pass('pwd')->host('example.org')->port(123)->path('other/way')->query(array('foo' => 'bar'))->anchor('something'));
+    }
 }

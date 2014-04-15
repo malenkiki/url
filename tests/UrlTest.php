@@ -393,4 +393,29 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
         $this->assertEquals('https://login:pwd@example.org:123/path/other/way?arg=value&foo=bar#something', (string) $u->scheme('https')->user('login')->pass('pwd')->host('example.org')->port(123)->path('other/way')->query(array('foo' => 'bar'))->anchor('something'));
     }
+    
+    public function testCloningUrlShouldSuccess()
+    {
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $v = clone $u;
+        $this->assertEquals("$v", "$u");
+        $this->assertEquals((string) $v->scheme, (string) $u->scheme);
+        $this->assertEquals((string) $v->user, (string) $u->user);
+        $this->assertEquals((string) $v->pass, (string) $u->pass);
+        $this->assertEquals((string) $v->credential, (string) $u->credential);
+        $this->assertEquals((string) $v->host, (string) $u->host);
+        $this->assertEquals((string) $v->port, (string) $u->port);
+        $this->assertEquals((string) $v->path, (string) $u->path);
+        $this->assertEquals((string) $v->query, (string) $u->query);
+        $this->assertEquals((string) $v->anchor, (string) $u->anchor);
+        $this->assertEquals((string) $v->fragment, (string) $u->fragment);
+        $u->scheme('https')->host('example.com')->credential('login:pwd')->path('other');
+        $this->assertFalse((string) $v->scheme == (string) $u->scheme);
+        $this->assertFalse((string) $v->host == (string) $u->host);
+        $this->assertFalse((string) $v->credential == (string) $u->credential);
+        $this->assertFalse((string) $v->path == (string) $u->path);
+        $u->user('username')->pass('password');
+        $this->assertTrue((string) $v->credential == (string) $u->credential);
+    }
+
 }

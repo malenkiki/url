@@ -394,6 +394,17 @@ class Url
     }
 
 
+    public function __clone()
+    {
+        $this->value = clone $this->value;
+        $this->value->port = clone $this->value->port;
+        $this->value->path = clone $this->value->path;
+        $this->value->query = clone $this->value->query;
+        $this->value->fragment = clone $this->value->fragment;
+        $this->credential = clone $this->credential;
+    }
+
+
     public function __toString()
     {
         $this->value->str = $this->_build();

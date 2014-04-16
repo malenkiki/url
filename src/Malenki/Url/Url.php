@@ -207,36 +207,12 @@ class Url
                 $this->value->$k = null;
             }
 
-
-            if($k == 'scheme')
+            if(!in_array($k, array('user', 'pass')))
             {
-                $this->value->scheme = new Scheme($this->value->scheme);
-            }
-            
-            if($k == 'host')
-            {
-                $this->value->host = new Host($this->value->host);
+                $class = __NAMESPACE__ .'\\'. ucfirst($k);
+                $this->value->$k = new $class($this->value->$k);
             }
 
-            if($k == 'port')
-            {
-                $this->value->port = new Port($this->value->port);
-            }
-
-
-            if($k == 'path')
-            {
-                $this->value->path = new Path($this->value->path);
-            }
-            if($k == 'query')
-            {
-                $this->value->query = new Query($this->value->query);
-            }
-
-            if($k == 'fragment')
-            {
-                $this->value->fragment = new Fragment($this->value->fragment);
-            }
         }
         
         if(!$this->credential)
@@ -487,7 +463,7 @@ class Url
 
     public function clear($part = null)
     {
-        $arr_clearable = array('credential', 'port', 'path', 'query', 'anchor', 'fragment');
+        $arr_clearable = array('scheme', 'credential', 'host', 'port', 'path', 'query', 'anchor', 'fragment');
 
         if(is_null($part))
         {

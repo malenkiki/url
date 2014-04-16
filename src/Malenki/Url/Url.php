@@ -62,6 +62,13 @@ class Url
 
 
 
+    /**
+     * Magic getter call, allowing use of each URL's part by calling its name.
+     * 
+     * @param string $name One name of the available part
+     * @access public
+     * @return mixed
+     */
     public function __get($name)
     {
         if( in_array( $name, self::$arr_parts))
@@ -72,6 +79,14 @@ class Url
     }
 
 
+    /**
+     * Magic setters to change each URL's part. 
+     * 
+     * @param string $name URL part name
+     * @param mixed $value 
+     * @access public
+     * @return void
+     */
     public function __set($name, $value)
     {
         if(in_array($name, array('scheme', 'host', 'user', 'pass')))
@@ -142,6 +157,12 @@ class Url
     }
 
 
+    /**
+     * Instanciate object for each URL part, event void part. 
+     * 
+     * @access protected
+     * @return void
+     */
     protected function _ensureKeys()
     {
         $arr_keys = array_slice(self::$arr_parts, 0, 8);
@@ -201,6 +222,8 @@ class Url
         }
         return $this->value->scheme ? strtolower($this->value->scheme) : null;
     }
+
+
     protected function _host($str = null)
     {
         if(is_string($str))

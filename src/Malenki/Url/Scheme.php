@@ -27,5 +27,71 @@ namespace Malenki\Url;
 
 class Scheme 
 {
+    protected $value = null;
+
+
+    public function __get($name)
+    {
+        if($name == 'clear')
+        {
+            return $this->clear();
+        }
+    }
+
+    public function __construct($str = null)
+    {
+        if($str)
+        {
+            $this->set($str);
+        }
+    }
+
+
+
+    public function set($str)
+    {
+        if(is_string($str))
+        {
+            $str = preg_replace('@.//$@' , '', $str);
+
+            if(strlen($str) && preg_match('/^[a-z]{1}[a-z0-9\+\.\-]+$/i', $str))
+            {
+                $this->value = strtolower($str);
+            }
+            else
+            {
+                throw new \InvalidArgumentException('Invalid scheme name!');
+            }
+        }
+        else
+        {
+            throw new \InvalidArgumentException('Scheme must a string!');
+        }
+    }
+
+
+    public function get()
+    {
+        return $this->value;
+    }
+
+
+    public function clear()
+    {
+        $this->value = null;
+        return $this;
+    }
+
+
+
+    public function isVoid()
+    {
+        return is_null($this->value);
+    }
+
+    public function __toString()
+    {
+        return (string) $this->value;
+    }
 }
 

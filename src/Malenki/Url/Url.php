@@ -111,10 +111,16 @@ class Url
      */
     public function __set($name, $value)
     {
-        if(in_array($name, array('scheme', 'host', 'user', 'pass')))
+        if(in_array($name, array('host', 'user', 'pass')))
         {
             $method = '_' . $name;
             $this->$method($value);
+        }
+
+
+        if($name == 'scheme')
+        {
+            $this->value->scheme = new Scheme($value);
         }
 
         if($name == 'credential')
@@ -196,9 +202,10 @@ class Url
                 $this->value->$k = null;
             }
 
-            if($k == 'path')
+
+            if($k == 'scheme')
             {
-                $this->value->path = new Path($this->value->path);
+                $this->value->scheme = new Scheme($this->value->scheme);
             }
 
             if($k == 'port')
@@ -206,6 +213,11 @@ class Url
                 $this->value->port = new Port($this->value->port);
             }
 
+
+            if($k == 'path')
+            {
+                $this->value->path = new Path($this->value->path);
+            }
             if($k == 'query')
             {
                 $this->value->query = new Query($this->value->query);
@@ -227,22 +239,9 @@ class Url
     }
 
 
-    protected function _scheme($str = null)
+    protected function _scheme()
     {
-        if(is_string($str))
-        {
-            $str = preg_replace('@.//$@' , '', $str);
-
-            if(strlen($str) && preg_match('/^[a-z]{1}[a-z0-9\+\.\-]+$/i', $str))
-            {
-                $this->value->scheme = $str;
-            }
-            else
-            {
-                throw new \InvalidArgumentException('Invalid scheme name!');
-            }
-        }
-        return $this->value->scheme ? strtolower($this->value->scheme) : null;
+        return $this->value->scheme;
     }
 
 
@@ -427,8 +426,7 @@ class Url
 
     public function scheme($str)
     {
-        $this->_scheme($str);
-
+        $this->value->scheme->set($str);
         return $this;
     }
     
@@ -527,6 +525,7 @@ class Url
     public function __clone()
     {
         $this->value = clone $this->value;
+        $this->value->scheme = clone $this->value->scheme;
         $this->value->port = clone $this->value->port;
         $this->value->path = clone $this->value->path;
         $this->value->query = clone $this->value->query;

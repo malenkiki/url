@@ -111,7 +111,7 @@ class Url
      */
     public function __set($name, $value)
     {
-        if(in_array($name, array('host', 'user', 'pass')))
+        if(in_array($name, array('user', 'pass')))
         {
             $method = '_' . $name;
             $this->$method($value);
@@ -121,6 +121,11 @@ class Url
         if($name == 'scheme')
         {
             $this->value->scheme = new Scheme($value);
+        }
+
+        if($name == 'host')
+        {
+            $this->value->host = new Host($value);
         }
 
         if($name == 'credential')
@@ -207,6 +212,11 @@ class Url
             {
                 $this->value->scheme = new Scheme($this->value->scheme);
             }
+            
+            if($k == 'host')
+            {
+                $this->value->host = new Host($this->value->host);
+            }
 
             if($k == 'port')
             {
@@ -245,26 +255,9 @@ class Url
     }
 
 
-    protected function _host($str = null)
+    protected function _host()
     {
-        if(is_string($str))
-        {
-            //TODO: urlencode ? http://be2.php.net/manual/en/function.rawurlencode.php#26869
-            //TODO: 255 max with separator! Cf. http://stackoverflow.com/questions/106179/regular-expression-to-match-hostname-or-ip-address
-            $str = trim($str);
-            $ip = "/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/";
-            $name = "/^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))*$/";
-            if(strlen($str) > 0 && strlen($str) <= 255 && (preg_match($ip, $str) || preg_match($name, $str)))
-            {
-                $this->value->host = $str;
-            }
-            else
-            {
-                throw new \InvalidArgumentException('Invalid hostname provided');
-            }
-        }
-
-        return $this->value->host ? $this->value->host : null;
+        return $this->value->host;
     }
     
     protected function _port()
@@ -322,7 +315,7 @@ class Url
     {
         $arr = array();
         
-        if($this->_scheme())
+        if(!$this->_scheme()->isVoid())
         {
             $arr[] = $this->_scheme() . '://';
         }
@@ -453,8 +446,7 @@ class Url
 
     public function host($str)
     {
-        $this->_host($str);
-
+        $this->value->host->set($str);
         return $this;
     }
 
@@ -526,6 +518,7 @@ class Url
     {
         $this->value = clone $this->value;
         $this->value->scheme = clone $this->value->scheme;
+        $this->value->host = clone $this->value->host;
         $this->value->port = clone $this->value->port;
         $this->value->path = clone $this->value->path;
         $this->value->query = clone $this->value->query;

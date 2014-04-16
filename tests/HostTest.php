@@ -22,49 +22,39 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-use \Malenki\Url\Scheme;
+use \Malenki\Url\Host;
 
-class SchemeTest extends PHPUnit_Framework_TestCase
+class HostTest extends PHPUnit_Framework_TestCase
 {
     public function testInstanciateWithStringShouldSuccess()
     {
-        $s = new Scheme('http');
-        $this->assertInstanceOf('\Malenki\Url\Scheme', $s);
+        $h = new Host('example.org');
+        $this->assertInstanceOf('\Malenki\Url\Host', $h);
     }
 
     public function testIsVoidOrNotShouldSuccess()
     {
-        $s = new Scheme('https');
-        $this->assertFalse($s->isVoid());
-        $s = new Scheme();
-        $this->assertTrue($s->isVoid());
+        $h = new Host('example.org');
+        $this->assertFalse($h->isVoid());
+        $h = new Host();
+        $this->assertTrue($h->isVoid());
     }
 
     public function testClearValueShouldSuccess()
     {
-        $s = new Scheme('ftp');
-        $s->clear();
-        $this->assertTrue($s->isVoid());
-        $s = new Scheme('ssh');
-        $s->clear;
-        $this->assertTrue($s->isVoid());
+        $h = new Host('example.org');
+        $h->clear();
+        $this->assertTrue($h->isVoid());
+        $h = new Host('google.com');
+        $h->clear;
+        $this->assertTrue($h->isVoid());
     }
 
     public function testSettingValueShouldSuccess()
     {
-        $s = new Scheme('http');
-        $s->set('ftp');
-        $this->assertEquals('ftp', "$s");
-        $this->assertEquals('ftp', $s->get());
-    }
-
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSettingBadValueShouldFail()
-    {
-        $s = new Scheme('http foo');
+        $h = new Host('example.org');
+        $h->set('google.com');
+        $this->assertEquals('google.com', "$h");
+        $this->assertEquals('google.com', $h->get());
     }
 }
-

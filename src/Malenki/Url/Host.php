@@ -27,4 +27,73 @@ namespace Malenki\Url;
 
 class Host 
 {
+    protected $value = null;
+
+
+    public function __get($name)
+    {
+        if($name == 'clear')
+        {
+            return $this->clear();
+        }
+    }
+
+    public function __construct($str = null)
+    {
+        if($str)
+        {
+            $this->set($str);
+        }
+    }
+
+
+
+    public function set($str)
+    {
+        if(is_string($str))
+        {
+            //TODO: urlencode ? http://be2.php.net/manual/en/function.rawurlencode.php#26869
+            //255 max with separator! Cf. http://stackoverflow.com/questions/106179/regular-expression-to-match-hostname-or-ip-address
+            $str = trim($str);
+            $ip = "/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/";
+            $name = "/^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))*$/";
+            if(strlen($str) > 0 && strlen($str) <= 255 && (preg_match($ip, $str) || preg_match($name, $str)))
+            {
+                $this->value = $str;
+            }
+            else
+            {
+                throw new \InvalidArgumentException('Invalid hostname provided');
+            }
+        }
+        else
+        {
+            throw new \InvalidArgumentException('Hostname must be a string!');
+        }
+    }
+
+
+    public function get()
+    {
+        return $this->value;
+    }
+
+
+    public function clear()
+    {
+        $this->value = null;
+        return $this;
+    }
+
+
+
+    public function isVoid()
+    {
+        return is_null($this->value);
+    }
+
+    public function __toString()
+    {
+        return (string) $this->value;
+    }
 }

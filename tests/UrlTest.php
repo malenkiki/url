@@ -417,5 +417,28 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->user('username')->pass('password');
         $this->assertTrue((string) $v->credential == (string) $u->credential);
     }
+    
+    public function testDisablingPartShouldSuccess()
+    {
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $this->assertEquals('http://username:password@hostname/path?arg=value', (string) $u->no('anchor')->no('port'));
+        $this->assertEquals('http://hostname?arg=value', (string) $u->no_credential->no_path);
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $this->assertEquals('http://username:password@hostname/path?arg=value', (string) $u->no(array('anchor', 'port')));
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $this->assertEquals('http://username:password@hostname/path?arg=value', (string) $u->disable('anchor')->disable('port'));
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $this->assertEquals('http://username:password@hostname/path?arg=value', (string) $u->disable(array('anchor', 'port')));
+        $this->assertEquals('http://hostname?arg=value', (string) $u->disable_credential->disable_path);
+    }
 
+    public function testHavingPartShouldSuccess()
+    {
+        $this->markTestSkipped();
+        $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+        $this->assertTrue($u->has('anchor'));
+        $this->assertTrue($u->has('port'));
+        $this->assertTrue($u->has_credential);
+        $this->assertTrue($u->has_path);
+    }
 }

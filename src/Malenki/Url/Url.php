@@ -63,7 +63,7 @@ class Url
 
 
     /**
-     * Magic getter call, allowing use of each URL's part by calling its name.
+     * Magic getter call, allowing use of each URL's part by calling its name and can disable each part by prefixing it with `no_` or `disable_`.
      * 
      * @param string $name One name of the available part
      * @access public
@@ -75,6 +75,11 @@ class Url
         {
             $method = '_' . $name;
             return $this->$method();
+        }
+
+        if(preg_match('/^(no_|disable_)/', $name))
+        {
+            return $this->no(preg_replace('/^(no_|disable_)/', '', $name));
         }
     }
 
@@ -334,6 +339,45 @@ class Url
     }
 
 
+    public function no($name)
+    {
+        $fct = function($name){
+            if( in_array( $name, self::$arr_parts))
+            {
+                if($name == 'credential')
+                {
+                    $this->credential->clear;
+                }
+                else
+                {
+                    if($name == 'anchor')
+                    {
+                        $name = 'fragment';
+                    }
+                    $this->value->$name->clear;
+                }
+            }
+        };
+
+        if(is_array($name))
+        {
+            foreach($name as $n)
+            {
+                $fct($n);
+            }
+
+            return $this;
+        }
+
+        $fct($name);
+
+        return $this;
+    }
+
+    public function disable($name)
+    {
+        return $this->no($name);
+    }
 
     public function scheme($str)
     {

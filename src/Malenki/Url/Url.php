@@ -63,7 +63,15 @@ class Url
 
 
     /**
-     * Magic getter call, allowing use of each URL's part by calling its name and can disable each part by prefixing it with `no_` or `disable_`.
+     * Magic getter call, allowing use of each URL's part by calling its name 
+     * with or without some prefix.
+     *
+     * If called without any prefix, then you get wanted part as object, and 
+     * you can use it as string or object and use its own methods.
+     *
+     * If it is prefixed with `no_` or `disable_`, then given part is avoid.
+     *
+     * If the prefix is `has_`, then it is true is it is present or false.
      * 
      * @param string $name One name of the available part
      * @access public
@@ -71,16 +79,25 @@ class Url
      */
     public function __get($name)
     {
+        // get object of each part
         if( in_array( $name, self::$arr_parts))
         {
             $method = '_' . $name;
             return $this->$method();
         }
 
+        // disable part
         if(preg_match('/^(no_|disable_)/', $name))
         {
             return $this->no(preg_replace('/^(no_|disable_)/', '', $name));
         }
+
+        // test part
+        if(preg_match('/^has_/', $name))
+        {
+            return $this->has(preg_replace('/^has_/', '', $name));
+        }
+
     }
 
 
@@ -374,9 +391,38 @@ class Url
         return $this;
     }
 
+
+
     public function disable($name)
     {
         return $this->no($name);
+    }
+
+
+
+    public function has($name)
+    {
+        if( in_array( $name, self::$arr_parts))
+        {
+            if($name == 'credential')
+            {
+                return !$this->credential->isVoid();
+            }
+            else
+            {
+                if($name == 'anchor')
+                {
+                    $name = 'fragment';
+                }
+                return !$this->value->$name->isVoid();
+            }
+        }
+        else
+        {
+            throw new \InvalidArgumentException(
+                sprintf('Part %s does not exist!', $name)
+            );
+        }
     }
 
     public function scheme($str)

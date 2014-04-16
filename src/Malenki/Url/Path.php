@@ -84,6 +84,11 @@ class Path extends \Malenki\Bah\A
         return $this;
     }
 
+    public function isVoid()
+    {
+        return count($this) == 0;
+    }
+
     public function __toString()
     {
         if(count($this->value))

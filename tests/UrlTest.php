@@ -434,7 +434,6 @@ class UrlTest extends PHPUnit_Framework_TestCase
 
     public function testHavingPartShouldSuccess()
     {
-        $this->markTestSkipped();
         $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
         $this->assertTrue($u->has('anchor'));
         $this->assertTrue($u->has('port'));

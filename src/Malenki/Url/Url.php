@@ -25,6 +25,23 @@
 
 namespace Malenki\Url;
 
+/**
+ * Url utility 
+ * 
+ * @property-read $scheme Get the Scheme object (http, https, ftp…), so, you can have some informations, and you can change it too
+ * @property-read $credential Get the credential object, to set/change/avoid, full credential or just username or password
+ * @property-read $user Get the credential's user part, it is a shorthand for the credentail's user part call
+ * @property-read $pass Get the credential's password part, it is a shorthand for the credentail's pass part call
+ * @property-read $host Get the host string part
+ * @property-read $port Get the Port object, so you can chage it or avoid it
+ * @property-read $path Get the Path object, so you can add branch, remove some of them or even avoid full path
+ * @property-read $query Get the Query object, so you can add, change, delete key/value or avoid whole Query content
+ * @property-read $fragment Get the Fragment object, so you can edit or avoid it
+ * @property-read $anchor Get the same thing as $fragment magic getter, it is an alias
+ * @copyright 2014 Michel Petit
+ * @author Michel Petit <petit.michel@gmail.com> 
+ * @license MIT
+ */
 class Url
 {
     protected static $arr_parts = array(

@@ -32,9 +32,28 @@ You can handle URL using two ways:
 
 ### Only URL class
 
+#### Set values or complete thems
+
+Each URL part can be called with its name as a chainable method, as you can see into the following example:
+
 ```php
 $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
 $u->user('login')->host('example.org')->query(array('foo', 'bar'));
+```
+You must notice that methods `path()` and `query()` do not remove original content, but complete it with value given as argument. You must disable respective part before, like explained into next part.
+
+#### Disable parts or test their availability
+
+Some more actions are available too, by using methods `no()`, `disable()` and `has()`:
+
+ - `no()` and `disable()` are both the same effect, one is alias of other, and take one argument, a string or an array of string. Argument must contain an URL part (`scheme`, `port`…). So, `$u->no('port')` disables port prt and `$u->disable(array('query', 'path'))` removes query and path parts from the URL.
+ - `has()` tests whether a part is available into the URL or not. Simple, you give the name of the part to test and the method return `true` if it finds the part filled.
+
+All methods explained into this section can be called using magic getter by using method name as prefix, followed by underscore and the part's name, so, you can do this for example:
+
+```php
+echo $u->no_port->disable_credential;
+var_dump($u->has_port);
 ```
 
 ### Act on URL's parts

@@ -46,7 +46,7 @@ You must notice that methods `path()` and `query()` do not remove original conte
 
 Some more actions are available too, by using methods `no()`, `disable()` and `has()`:
 
- - `no()` and `disable()` are both the same effect, one is alias of other, and take one argument, a string or an array of string. Argument must contain an URL part (`scheme`, `port`…). So, `$u->no('port')` disables port prt and `$u->disable(array('query', 'path'))` removes query and path parts from the URL.
+ - `no()` and `disable()` are both the same effect, one is alias of other, and take one argument, a string or an array of string. Argument must contain an URL part (`scheme`, `port`…). So, `$u->no('port')` disables port part and `$u->disable(array('query', 'path'))` removes query and path parts from the URL.
  - `has()` tests whether a part is available into the URL or not. Simple, you give the name of the part to test and the method return `true` if it finds the part filled.
 
 All methods explained into this section can be called using magic getter by using method name as prefix, followed by underscore and the part's name, so, you can do this for example:
@@ -66,3 +66,23 @@ $u->anchor->clear; // delete anchor
 $u->path->add('other'); // add branch to path
 $u->query->arg = 'other_value'; // Changed one arg of the query string
 ```
+
+#### Common methods
+
+Each part has at least this methods:
+
+ - `isVoid()` to test whether the part has content or not
+ - `clear()` to avoid the part
+ - `toString()` is available
+
+#### Set in one shot
+
+You can set part directly (override original content):
+
+```php
+$u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
+$u->path = 'other/path'; //or using array
+$u->anchor = 'new_anchor';
+```
+
+

@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "06b70562d7a00eb220922b1ad2d276a7",
+    "hash": "0e20135b4e116abfa908327e4cb51e44",
     "packages": [
         {
             "name": "malenki/bah",

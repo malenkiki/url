@@ -1,8 +1,8 @@
 {
     "name": "malenki/url",
     "type": "library",
-    "description": "Simple class to deal with URL!",
-    "keywords": ["http","string","URL"],
+    "description": "Simple class to deal with URL, using magic getter, multisyntaxic way, to play with URL like yoou want!",
+    "keywords": ["http","string","URL", "scheme", "host", "credential", "query", "fragment", "anchor"],
     "homepage": "https://github.com/malenkiki/url",
     "license": "MIT",
     "authors": [

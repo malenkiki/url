@@ -30,6 +30,20 @@ class SchemeTest extends PHPUnit_Framework_TestCase
     {
         $s = new Scheme('http');
         $this->assertInstanceOf('\Malenki\Url\Scheme', $s);
+        $s = new Scheme('svn+ssh');
+        $this->assertInstanceOf('\Malenki\Url\Scheme', $s);
+        $s = new Scheme('foo.bar');
+        $this->assertInstanceOf('\Malenki\Url\Scheme', $s);
+        $s = new Scheme('thing-other');
+        $this->assertInstanceOf('\Malenki\Url\Scheme', $s);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInstanciateWithBadStringShouldfail()
+    {
+        $s = new Scheme('http/truc');
     }
 
     public function testIsVoidOrNotShouldSuccess()
@@ -53,9 +67,17 @@ class SchemeTest extends PHPUnit_Framework_TestCase
     public function testSettingValueShouldSuccess()
     {
         $s = new Scheme('http');
+        $this->assertEquals('http', "$s");
+        $this->assertEquals('http', $s->get());
         $s->set('ftp');
         $this->assertEquals('ftp', "$s");
         $this->assertEquals('ftp', $s->get());
+        $s->set('svn+ssh');
+        $this->assertEquals('svn+ssh', "$s");
+        $this->assertEquals('svn+ssh', $s->get());
+        $s->set('foo.bar');
+        $this->assertEquals('foo.bar', "$s");
+        $this->assertEquals('foo.bar', $s->get());
     }
 
 
@@ -64,7 +86,8 @@ class SchemeTest extends PHPUnit_Framework_TestCase
      */
     public function testSettingBadValueShouldFail()
     {
-        $s = new Scheme('http foo');
+        $s = new Scheme();
+        $s->set('http foo');
     }
 }
 

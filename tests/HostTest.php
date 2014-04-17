@@ -32,6 +32,24 @@ class HostTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Malenki\Url\Host', $h);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInstanciateWithBadStringShouldFail()
+    {
+        $h = new Host('bad example.org');
+        $this->assertInstanceOf('\Malenki\Url\Host', $h);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInstanciateWithTooLongSubPartShouldFail()
+    {
+        $h = new Host(str_repeat(implode('', range('a', 'z')), 3) . '.org');
+        $this->assertInstanceOf('\Malenki\Url\Host', $h);
+    }
+
     public function testIsVoidOrNotShouldSuccess()
     {
         $h = new Host('example.org');

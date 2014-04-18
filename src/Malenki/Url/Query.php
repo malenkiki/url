@@ -29,7 +29,7 @@ namespace Malenki\Url;
 class Query implements \Countable
 {
     protected $arr = array();
-    protected $rfc = PHP_QUERY_RFC1738;
+    protected $rfc = null;
     protected $separator = '&';
 
 
@@ -169,19 +169,22 @@ class Query implements \Countable
 
 
 
-    public function rfc($rfc = PHP_QUERY_RFC1738)
+    public function rfc($rfc = 'RFC1738')
     {
-        if( $rfc === PHP_QUERY_RFC1738 || $rfc == 'RFC1738' || $rfc == '1738')
+        if(version_compare(PHP_VERSION, '5.4.0', '>='))
         {
-            $this->rfc = PHP_QUERY_RFC1738;
-        }
-        elseif( $rfc === PHP_QUERY_RFC3986 || $rfc == 'RFC3986' || $rfc == '3986')
-        {
-            $this->rfc = PHP_QUERY_RFC3986;
-        }
-        else
-        {
-            throw new \InvalidArgumentException('Bad RFC name!');
+            if( $rfc === PHP_QUERY_RFC1738 || $rfc == 'RFC1738' || $rfc == '1738')
+            {
+                $this->rfc = PHP_QUERY_RFC1738;
+            }
+            elseif( $rfc === PHP_QUERY_RFC3986 || $rfc == 'RFC3986' || $rfc == '3986')
+            {
+                $this->rfc = PHP_QUERY_RFC3986;
+            }
+            else
+            {
+                throw new \InvalidArgumentException('Bad RFC name!');
+            }
         }
 
         return $this;
@@ -208,7 +211,7 @@ class Query implements \Countable
                     $this->arr,
                     null,
                     $this->separator,
-                    $this->rfc
+                    is_null($this->rfc) ? PHP_QUERY_RFC1738 : $this->rfc
                 );
             }
             else

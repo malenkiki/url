@@ -420,6 +420,13 @@ class Url
         }
     }
 
+    /**
+     * Sets the scheme part.
+     * 
+     * @param string $str 
+     * @access public
+     * @return Url
+     */
     public function scheme($str)
     {
         $this->value->scheme->set($str);
@@ -427,6 +434,13 @@ class Url
     }
     
 
+    /**
+     * Sets the credential part. 
+     * 
+     * @param string $str 
+     * @access public
+     * @return Url
+     */
     public function credential($str)
     {
         $this->credential = new Credential($str);
@@ -461,6 +475,13 @@ class Url
     }
 
     
+    /**
+     * Complete the current path by adding new node(s).
+     * 
+     * @param mixed $path Path as array or string
+     * @access public
+     * @return Url
+     */
     public function path($path)
     {
         $p = new Path($path);
@@ -470,6 +491,13 @@ class Url
         return $this;
     }
 
+    /**
+     * Complete current query using string or array.
+     * 
+     * @param mixed $q String or array
+     * @access public
+     * @return Url
+     */
     public function query($q)
     {
         $this->value->query = $this->value->query->merge($q);
@@ -488,6 +516,13 @@ class Url
         return $this->fragment($str);
     }
 
+    /**
+     * Clears some part or avoid URL 
+     * 
+     * @param string $part If string part name is given or an array of part name is given, then avoid them all. If no arg, avoid whole URL
+     * @access public
+     * @return Url
+     */
     public function clear($part = null)
     {
         $arr_clearable = array('scheme', 'credential', 'host', 'port', 'path', 'query', 'anchor', 'fragment');

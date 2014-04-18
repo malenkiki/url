@@ -29,6 +29,8 @@ namespace Malenki\Url;
 class Query implements \Countable
 {
     protected $arr = array();
+    protected $rfc = PHP_QUERY_RFC1738;
+    protected $separator = '&';
 
 
     public function __get($name)
@@ -36,6 +38,16 @@ class Query implements \Countable
         if($name == 'clear')
         {
             return $this->clear();
+        }
+
+        if($name == 'rfc1738')
+        {
+            return $this->rfc(PHP_QUERY_RFC1738);
+        }
+
+        if($name == 'rfc3986')
+        {
+            return $this->rfc(PHP_QUERY_RFC3986);
         }
 
         return $this->get($name);
@@ -155,11 +167,47 @@ class Query implements \Countable
         return $this;
     }
 
+
+
+    public function rfc($rfc = PHP_QUERY_RFC1738)
+    {
+        if( $rfc === PHP_QUERY_RFC1738 || $rfc == 'RFC1738' || $rfc == '1738')
+        {
+            $this->rfc = PHP_QUERY_RFC1738;
+        }
+        elseif( $rfc === PHP_QUERY_RFC3986 || $rfc == 'RFC3986' || $rfc == '3986')
+        {
+            $this->rfc = PHP_QUERY_RFC3986;
+        }
+        else
+        {
+            throw new \InvalidArgumentException('Bad RFC name!');
+        }
+
+        return $this;
+    }
+
+
+
+    public function separator($str = '&')
+    {
+        $this->separator = $str;
+
+        return $this;
+    }
+
+
+
     public function __toString()
     {
         if(count($this->arr))
         {
-            return http_build_query($this->arr);
+            return http_build_query(
+                $this->arr,
+                null,
+                $this->separator,
+                $this->rfc
+            );
         }
         else
         {

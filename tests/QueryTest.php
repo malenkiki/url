@@ -85,5 +85,26 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $q = new Query();
         $this->assertTrue($q->isVoid());
     }
+    
+    public function testUsingRfc1738ShouldSuccess()
+    {
+        $q = new Query();
+        $q->set('arg', 'some value');
+        $this->assertEquals('arg=some+value', (string) $q->rfc1738);
+    }
+    
+    public function testUsingRfc3986ShouldSuccess()
+    {
+        $q = new Query();
+        $q->set('arg', 'some value');
+        $this->assertEquals('arg=some%20value', (string) $q->rfc3986);
+    }
+    
+    public function testUsingCustomSeparatorShouldSuccess()
+    {
+        $q = new Query();
+        $q->set('arg', 'value')->set('arg2', 'value2')->separator('&amp;');
+        $this->assertEquals('arg=value&amp;arg2=value2', (string) $q);
+    }
 }
 

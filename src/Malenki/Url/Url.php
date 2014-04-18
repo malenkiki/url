@@ -287,6 +287,12 @@ class Url
     }
 
 
+    /**
+     * Construct URL with its available parts 
+     * 
+     * @access protected
+     * @return string
+     */
     protected function _build()
     {
         $arr = array();
@@ -324,6 +330,13 @@ class Url
     }
 
 
+    /**
+     * Disable some URL part by given one name as string or several name into array. 
+     * 
+     * @param mixed $name string or array containing URL part name(s)
+     * @access public
+     * @return Url
+     */
     public function no($name)
     {
         $fct = function($name){
@@ -361,6 +374,13 @@ class Url
 
 
 
+    /**
+     * Shorthand for no() method 
+     * 
+     * @param string $name URL part name
+     * @access public
+     * @return Url
+     */
     public function disable($name)
     {
         return $this->no($name);
@@ -368,6 +388,13 @@ class Url
 
 
 
+    /**
+     * Tests whether the given URL part is available or not 
+     * 
+     * @param string $name URL name
+     * @access public
+     * @return boolean
+     */
     public function has($name)
     {
         if( in_array( $name, self::$arr_parts))

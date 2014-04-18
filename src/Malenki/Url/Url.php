@@ -44,7 +44,7 @@ namespace Malenki\Url;
  */
 class Url
 {
-    protected static $arr_parts = array(
+    public static $arr_parts = array(
         'scheme',
         'host',
         'port',
@@ -340,7 +340,7 @@ class Url
     public function no($name)
     {
         $fct = function($name){
-            if( in_array( $name, self::$arr_parts))
+            if( in_array( $name, Url::$arr_parts))
             {
                 if($name == 'credential')
                 {

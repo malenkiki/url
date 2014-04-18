@@ -329,6 +329,24 @@ class Url
         return implode('', $arr);
     }
 
+    protected function clearAllOrNot($name)
+    {
+        if( in_array( $name, self::$arr_parts))
+        {
+            if($name == 'credential')
+            {
+                $this->credential->clear;
+            }
+            else
+            {
+                if($name == 'anchor')
+                {
+                    $name = 'fragment';
+                }
+                $this->value->$name->clear;
+            }
+        }
+    }
 
     /**
      * Disable some URL part by given one name as string or several name into array. 
@@ -339,35 +357,17 @@ class Url
      */
     public function no($name)
     {
-        $fct = function($name){
-            if( in_array( $name, Url::$arr_parts))
-            {
-                if($name == 'credential')
-                {
-                    $this->credential->clear;
-                }
-                else
-                {
-                    if($name == 'anchor')
-                    {
-                        $name = 'fragment';
-                    }
-                    $this->value->$name->clear;
-                }
-            }
-        };
-
         if(is_array($name))
         {
             foreach($name as $n)
             {
-                $fct($n);
+                $this->clearAllOrNot($n);
             }
 
             return $this;
         }
 
-        $fct($name);
+        $this->clearAllOrNot($name);
 
         return $this;
     }

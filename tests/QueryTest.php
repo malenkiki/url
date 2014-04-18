@@ -88,16 +88,30 @@ class QueryTest extends PHPUnit_Framework_TestCase
     
     public function testUsingRfc1738ShouldSuccess()
     {
-        $q = new Query();
-        $q->set('arg', 'some value');
-        $this->assertEquals('arg=some+value', (string) $q->rfc1738);
+        if(version_compare(PHP_VERSION, '5.4.0', '>='))
+        {
+            $q = new Query();
+            $q->set('arg', 'some value');
+            $this->assertEquals('arg=some+value', (string) $q->rfc1738);
+        }
+        else
+        {
+            $this->markTestSkipped('Cannot use custom RFC on PHP prior to 5.4');
+        }
     }
     
     public function testUsingRfc3986ShouldSuccess()
     {
-        $q = new Query();
-        $q->set('arg', 'some value');
-        $this->assertEquals('arg=some%20value', (string) $q->rfc3986);
+        if(version_compare(PHP_VERSION, '5.4.0', '>='))
+        {
+            $q = new Query();
+            $q->set('arg', 'some value');
+            $this->assertEquals('arg=some%20value', (string) $q->rfc3986);
+        }
+        else
+        {
+            $this->markTestSkipped('Cannot use custom RFC on PHP prior to 5.4');
+        }
     }
     
     public function testUsingCustomSeparatorShouldSuccess()

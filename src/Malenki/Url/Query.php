@@ -202,12 +202,19 @@ class Query implements \Countable
     {
         if(count($this->arr))
         {
-            return http_build_query(
-                $this->arr,
-                null,
-                $this->separator,
-                $this->rfc
-            );
+            if(version_compare(PHP_VERSION, '5.4.0', '>='))
+            {
+                return http_build_query(
+                    $this->arr,
+                    null,
+                    $this->separator,
+                    $this->rfc
+                );
+            }
+            else
+            {
+                return http_build_query( $this->arr, null, $this->separator);
+            }
         }
         else
         {

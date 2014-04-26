@@ -33,7 +33,7 @@ class PortTest extends PHPUnit_Framework_TestCase
         $p = new Port(8080);
         $this->assertInstanceOf('\Malenki\Url\Port', $p);
     }
-    
+
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -41,7 +41,7 @@ class PortTest extends PHPUnit_Framework_TestCase
     {
         $p = new Port(-35);
     }
-    
+
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -77,7 +77,6 @@ class PortTest extends PHPUnit_Framework_TestCase
         $p->set('azerty');
     }
 
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -87,7 +86,6 @@ class PortTest extends PHPUnit_Framework_TestCase
         $p->set(-8080);
     }
 
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -96,7 +94,6 @@ class PortTest extends PHPUnit_Framework_TestCase
         $p = new Port();
         $p->set(65536);
     }
-
 
     public function testRangeFamilyShouldSuccess()
     {

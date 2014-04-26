@@ -32,8 +32,7 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $q = new Query('arg=value');
         $this->assertInstanceOf('\Malenki\Url\Query', $q);
     }
-    
-    
+
     public function testInstanciateWithArrayShouldSuccess()
     {
         $q = new Query(array('arg' => 'value'));
@@ -45,14 +44,14 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $q = new Query('arg=value&arg2=value2');
         $this->assertEquals(2, count($q));
     }
-    
+
     public function testGettingArgShouldSuccess()
     {
         $q = new Query('arg=value&arg2=value2');
         $this->assertEquals('value', $q->arg);
         $this->assertEquals('value2', $q->arg2);
     }
-    
+
     public function testSettingArgShouldSuccess()
     {
         $q = new Query('arg=value&arg2=value2');
@@ -60,8 +59,7 @@ class QueryTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('value3', $q->arg3);
     }
-    
-    
+
     public function testIfArgExistsShouldSuccess()
     {
         $q = new Query('arg=value&arg2=value2');
@@ -69,7 +67,7 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($q->exists('arg'));
         $this->assertTrue($q->exists('arg2'));
     }
-    
+
     public function testIfValueExistsShouldSuccess()
     {
         $q = new Query('arg=value&arg2=value2');
@@ -77,7 +75,7 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($q->has('value'));
         $this->assertTrue($q->has('value2'));
     }
-    
+
     public function testIfQueryIsVoidOrNotShouldSuccess()
     {
         $q = new Query('arg=value&arg2=value2');
@@ -85,35 +83,29 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $q = new Query();
         $this->assertTrue($q->isVoid());
     }
-    
+
     public function testUsingRfc1738ShouldSuccess()
     {
-        if(version_compare(PHP_VERSION, '5.4.0', '>='))
-        {
+        if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
             $q = new Query();
             $q->set('arg', 'some value');
             $this->assertEquals('arg=some+value', (string) $q->rfc1738);
-        }
-        else
-        {
+        } else {
             $this->markTestSkipped('Cannot use custom RFC on PHP prior to 5.4');
         }
     }
-    
+
     public function testUsingRfc3986ShouldSuccess()
     {
-        if(version_compare(PHP_VERSION, '5.4.0', '>='))
-        {
+        if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
             $q = new Query();
             $q->set('arg', 'some value');
             $this->assertEquals('arg=some%20value', (string) $q->rfc3986);
-        }
-        else
-        {
+        } else {
             $this->markTestSkipped('Cannot use custom RFC on PHP prior to 5.4');
         }
     }
-    
+
     public function testUsingCustomSeparatorShouldSuccess()
     {
         $q = new Query();
@@ -121,4 +113,3 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('arg=value&amp;arg2=value2', (string) $q);
     }
 }
-

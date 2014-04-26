@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright (c) 2014 Michel Petit <petit.michel@gmail.com>
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -9,10 +9,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -22,12 +22,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
 namespace Malenki\Url;
 
 /**
- * Url utility 
- * 
+ * Url utility
+ *
  * @property-read $scheme Get the Scheme object (http, https, ftp…), so, you can have some informations, and you can change it too
  * @property-read $credential Get the credential object, to set/change/avoid, full credential or just username or password
  * @property-read $user Get the credential's user part, it is a shorthand for the credentail's user part call
@@ -39,7 +38,7 @@ namespace Malenki\Url;
  * @property-read $fragment Get the Fragment object, so you can edit or avoid it
  * @property-read $anchor Get the same thing as $fragment magic getter, it is an alias
  * @copyright 2014 Michel Petit
- * @author Michel Petit <petit.michel@gmail.com> 
+ * @author Michel Petit <petit.michel@gmail.com>
  * @license MIT
  */
 class Url
@@ -60,41 +59,37 @@ class Url
     protected $value = null;
     protected $credential = null;
 
-
-
     /**
-     * Magic getter call, allowing use of each URL's part by calling its name 
+     * Magic getter call, allowing use of each URL's part by calling its name
      * with or without some prefix.
      *
-     * If called without any prefix, then you get wanted part as object, and 
+     * If called without any prefix, then you get wanted part as object, and
      * you can use it as string or object and use its own methods.
      *
      * If it is prefixed with `no_` or `disable_`, then given part is avoid.
      *
      * If the prefix is `has_`, then it is true is it is present or false.
-     * 
-     * @param string $name One name of the available part
+     *
+     * @param  string $name One name of the available part
      * @access public
      * @return mixed
      */
     public function __get($name)
     {
         // get object of each part
-        if( in_array( $name, self::$arr_parts))
-        {
+        if ( in_array( $name, self::$arr_parts)) {
             $method = '_' . $name;
+
             return $this->$method();
         }
 
         // disable part
-        if(preg_match('/^(no_|disable_)/', $name))
-        {
+        if (preg_match('/^(no_|disable_)/', $name)) {
             return $this->no(preg_replace('/^(no_|disable_)/', '', $name));
         }
 
         // test part
-        if(preg_match('/^has_/', $name))
-        {
+        if (preg_match('/^has_/', $name)) {
             return $this->has(preg_replace('/^has_/', '', $name));
         }
 
@@ -102,54 +97,45 @@ class Url
 
 
     /**
-     * Magic setters to change each URL's part. 
-     * 
-     * @param string $name URL part name
-     * @param mixed $value 
+     * Magic setters to change each URL's part.
+     *
+     * @param  string $name  URL part name
+     * @param  mixed  $value
      * @access public
      * @return void
      */
     public function __set($name, $value)
     {
-        if(in_array($name, array('user', 'pass')))
-        {
+        if (in_array($name, array('user', 'pass'))) {
             $method = '_' . $name;
             $this->$method($value);
         }
 
-
-        if($name == 'scheme')
-        {
+        if ($name == 'scheme') {
             $this->value->scheme = new Scheme($value);
         }
 
-        if($name == 'host')
-        {
+        if ($name == 'host') {
             $this->value->host = new Host($value);
         }
 
-        if($name == 'credential')
-        {
+        if ($name == 'credential') {
             $this->credential = new Credential($value);
         }
 
-        if($name == 'port')
-        {
+        if ($name == 'port') {
             $this->value->port = new Port($value);
         }
 
-        if($name == 'path')
-        {
+        if ($name == 'path') {
             $this->value->path = new Path($value);
         }
 
-        if($name == 'query')
-        {
+        if ($name == 'query') {
             $this->value->query = new Query($value);
         }
 
-        if(in_array($name, array('anchor', 'fragment')))
-        {
+        if (in_array($name, array('anchor', 'fragment'))) {
             $this->value->fragment = new Fragment($value);
         }
     }
@@ -158,41 +144,32 @@ class Url
     {
         $arr_keys = array_slice(self::$arr_parts, 0, 8);
 
-        if(is_string($url))
-        {
+        if (is_string($url)) {
             $this->value = (object) parse_url($url);
-        }
-        elseif(is_array($url) || is_object($url))
-        {
+        } elseif (is_array($url) || is_object($url)) {
 
-            if(is_object($url))
-            {
+            if (is_object($url)) {
                 $url = (array) $url;
             }
 
-            foreach($url as $k => $v)
-            {
-                if(!in_array($k, $arr_keys))
-                {
+            foreach ($url as $k => $v) {
+                if (!in_array($k, $arr_keys)) {
                     unset($url[$k]);
                 }
             }
 
-            if(count($url))
-            {
+            if (count($url)) {
                 $this->value = (object) $url;
             }
         }
 
-        
         $this->_ensureKeys();
         $this->value->str = $this->_build();
     }
 
-
     /**
-     * Instanciate object for each URL part, event void part. 
-     * 
+     * Instanciate object for each URL part, event void part.
+     *
      * @access protected
      * @return void
      */
@@ -200,23 +177,19 @@ class Url
     {
         $arr_keys = array_slice(self::$arr_parts, 0, 8);
 
-        foreach($arr_keys as $k)
-        {
-            if(!isset($this->value->$k))
-            {
+        foreach ($arr_keys as $k) {
+            if (!isset($this->value->$k)) {
                 $this->value->$k = null;
             }
 
-            if(!in_array($k, array('user', 'pass')))
-            {
+            if (!in_array($k, array('user', 'pass'))) {
                 $class = __NAMESPACE__ .'\\'. ucfirst($k);
                 $this->value->$k = new $class($this->value->$k);
             }
 
         }
-        
-        if(!$this->credential)
-        {
+
+        if (!$this->credential) {
             $this->credential = new Credential();
         }
 
@@ -224,43 +197,39 @@ class Url
         $this->credential->pass = $this->value->pass;
     }
 
-
     protected function _scheme()
     {
         return $this->value->scheme;
     }
 
-
     protected function _host()
     {
         return $this->value->host;
     }
-    
+
     protected function _port()
     {
         return $this->value->port;
     }
-    
+
     protected function _user($str = null)
     {
-        if($str)
-        {
+        if ($str) {
             $this->credential->user = $str;
         }
 
         return $this->credential->user;
     }
-    
+
     protected function _pass($str = null)
     {
-        if($str)
-        {
+        if ($str) {
             $this->credential->pass = $str;
         }
 
         return $this->credential->pass;
     }
-    
+
     protected function _path()
     {
         return $this->value->path;
@@ -269,7 +238,7 @@ class Url
     {
         return $this->value->query;
     }
-    
+
     protected function _fragment()
     {
         return $this->value->fragment;
@@ -280,49 +249,42 @@ class Url
         return $this->_fragment();
     }
 
-
     protected function _credential()
     {
         return $this->credential;
     }
 
-
     /**
-     * Construct URL with its available parts 
-     * 
+     * Construct URL with its available parts
+     *
      * @access protected
      * @return string
      */
     protected function _build()
     {
         $arr = array();
-        
-        if(!$this->_scheme()->isVoid())
-        {
+
+        if (!$this->_scheme()->isVoid()) {
             $arr[] = $this->_scheme() . '://';
         }
 
-        if(!$this->_credential()->isVoid())
-        {
+        if (!$this->_credential()->isVoid()) {
             $arr[] = $this->_credential().'@';
         }
 
         $arr[] = $this->_host();
-        
-        if(!$this->_port()->isVoid())
-        {
+
+        if (!$this->_port()->isVoid()) {
             $arr[] = ':' . $this->_port();
         }
 
         $arr[] = $this->_path();
 
-        if(!$this->_query()->isVoid())
-        {
+        if (!$this->_query()->isVoid()) {
             $arr[] = '?' . $this->_query();
         }
 
-        if(!$this->_fragment()->isVoid())
-        {
+        if (!$this->_fragment()->isVoid()) {
             $arr[] = '#' . $this->_fragment();
         }
 
@@ -331,16 +293,11 @@ class Url
 
     protected function clearAllOrNot($name)
     {
-        if( in_array( $name, self::$arr_parts))
-        {
-            if($name == 'credential')
-            {
+        if ( in_array( $name, self::$arr_parts)) {
+            if ($name == 'credential') {
                 $this->credential->clear;
-            }
-            else
-            {
-                if($name == 'anchor')
-                {
+            } else {
+                if ($name == 'anchor') {
                     $name = 'fragment';
                 }
                 $this->value->$name->clear;
@@ -349,18 +306,16 @@ class Url
     }
 
     /**
-     * Disable some URL part by given one name as string or several name into array. 
-     * 
-     * @param mixed $name string or array containing URL part name(s)
+     * Disable some URL part by given one name as string or several name into array.
+     *
+     * @param  mixed $name string or array containing URL part name(s)
      * @access public
      * @return Url
      */
     public function no($name)
     {
-        if(is_array($name))
-        {
-            foreach($name as $n)
-            {
+        if (is_array($name)) {
+            foreach ($name as $n) {
                 $this->clearAllOrNot($n);
             }
 
@@ -372,12 +327,10 @@ class Url
         return $this;
     }
 
-
-
     /**
-     * Shorthand for no() method 
-     * 
-     * @param string $name URL part name
+     * Shorthand for no() method
+     *
+     * @param  string $name URL part name
      * @access public
      * @return Url
      */
@@ -386,34 +339,26 @@ class Url
         return $this->no($name);
     }
 
-
-
     /**
-     * Tests whether the given URL part is available or not 
-     * 
-     * @param string $name URL name
+     * Tests whether the given URL part is available or not
+     *
+     * @param  string  $name URL name
      * @access public
      * @return boolean
      */
     public function has($name)
     {
-        if( in_array( $name, self::$arr_parts))
-        {
-            if($name == 'credential')
-            {
+        if ( in_array( $name, self::$arr_parts)) {
+            if ($name == 'credential') {
                 return !$this->credential->isVoid();
-            }
-            else
-            {
-                if($name == 'anchor')
-                {
+            } else {
+                if ($name == 'anchor') {
                     $name = 'fragment';
                 }
+
                 return !$this->value->$name->isVoid();
             }
-        }
-        else
-        {
+        } else {
             throw new \InvalidArgumentException(
                 sprintf('Part %s does not exist!', $name)
             );
@@ -422,22 +367,22 @@ class Url
 
     /**
      * Sets the scheme part.
-     * 
-     * @param string $str 
+     *
+     * @param  string $str
      * @access public
      * @return Url
      */
     public function scheme($str)
     {
         $this->value->scheme->set($str);
+
         return $this;
     }
-    
 
     /**
-     * Sets the credential part. 
-     * 
-     * @param string $str 
+     * Sets the credential part.
+     *
+     * @param  string $str
      * @access public
      * @return Url
      */
@@ -451,34 +396,35 @@ class Url
     public function user($str)
     {
         $this->_user($str);
+
         return $this;
     }
 
     public function pass($str)
     {
         $this->_pass($str);
+
         return $this;
     }
-
 
     public function host($str)
     {
         $this->value->host->set($str);
+
         return $this;
     }
-
 
     public function port($port)
     {
         $this->value->port->set($port);
+
         return $this;
     }
 
-    
     /**
      * Complete the current path by adding new node(s).
-     * 
-     * @param mixed $path Path as array or string
+     *
+     * @param  mixed $path Path as array or string
      * @access public
      * @return Url
      */
@@ -493,8 +439,8 @@ class Url
 
     /**
      * Complete current query using string or array.
-     * 
-     * @param mixed $q String or array
+     *
+     * @param  mixed $q String or array
      * @access public
      * @return Url
      */
@@ -508,6 +454,7 @@ class Url
     public function fragment($str)
     {
         $this->value->fragment->set($str);
+
         return $this;
     }
 
@@ -517,9 +464,9 @@ class Url
     }
 
     /**
-     * Clears some part or avoid URL 
-     * 
-     * @param string $part If string part name is given or an array of part name is given, then avoid them all. If no arg, avoid whole URL
+     * Clears some part or avoid URL
+     *
+     * @param  string $part If string part name is given or an array of part name is given, then avoid them all. If no arg, avoid whole URL
      * @access public
      * @return Url
      */
@@ -527,10 +474,8 @@ class Url
     {
         $arr_clearable = array('scheme', 'credential', 'host', 'port', 'path', 'query', 'anchor', 'fragment');
 
-        if(is_null($part))
-        {
-            foreach($arr_clearable as $p)
-            {
+        if (is_null($part)) {
+            foreach ($arr_clearable as $p) {
                 $method = '_'.$p;
                 $this->$method()->clear();
             }
@@ -538,19 +483,15 @@ class Url
             return $this;
         }
 
-        if(in_array($part, $arr_clearable))
-        {
+        if (in_array($part, $arr_clearable)) {
             $method = '_'.$part;
             $this->$method()->clear();
-        }
-        else
-        {
+        } else {
             throw new \InvalidArgumentException('Bad part name to clear.');
         }
 
         return $this;
     }
-
 
     public function __clone()
     {
@@ -564,10 +505,10 @@ class Url
         $this->credential = clone $this->credential;
     }
 
-
     public function __toString()
     {
         $this->value->str = $this->_build();
+
         return $this->value->str;
     }
 }

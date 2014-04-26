@@ -43,7 +43,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u = new Url($arr);
         $this->assertInstanceOf('\Malenki\Url\Url', $u);
     }
-    
+
     public function testInstanciateWithObjectShouldSuccess()
     {
         $obj = new \stdClass();
@@ -79,14 +79,14 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->query->arg3 = 'value3';
         $this->assertEquals('http://username:password@hostname:8080/path?arg=value&arg2=value2&arg3=value3#anchor', "$u");
     }
-    
+
     public function testResetingArgShouldSuccess()
     {
         $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
         $u->query->clear();
         $this->assertEquals('http://username:password@hostname:8080/path#anchor', "$u");
     }
-    
+
     public function testAddingPathShouldSuccess()
     {
         $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
@@ -94,22 +94,21 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->path->add('other');
         $this->assertEquals('http://username:password@hostname:8080/path/something/other?arg=value#anchor', "$u");
     }
-    
+
     public function testResetPathShouldSuccess()
     {
         $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
         $u->path->clear();
         $this->assertEquals('http://username:password@hostname:8080?arg=value#anchor', "$u");
     }
-    
+
     public function testSettingChainingPathShouldSuccess()
     {
         $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
         $u->path('something/other')->path('again');
         $this->assertEquals('http://username:password@hostname:8080/path/something/other/again?arg=value#anchor', "$u");
     }
-    
-    
+
     public function testResetCredentialsShouldSuccess()
     {
         $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
@@ -117,9 +116,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('http://hostname:8080/path?arg=value#anchor', "$u");
     }
-     
 
-    
     public function testSettingCredentialsShouldSuccess()
     {
         $u = new Url('http://hostname:8080/path?arg=value#anchor');
@@ -135,30 +132,29 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->credential->user = 'username';
 
         $this->assertEquals('http://username@hostname:8080/path?arg=value#anchor', "$u");
-        
+
         $u = new Url('http://hostname:8080/path?arg=value#anchor');
         $u->credential->user('username');
         $u->credential->pass('password');
 
         $this->assertEquals('http://username:password@hostname:8080/path?arg=value#anchor', "$u");
-        
+
         $u = new Url('http://hostname:8080/path?arg=value#anchor');
         $u->user = 'username';
         $u->pass = 'password';
 
         $this->assertEquals('http://username:password@hostname:8080/path?arg=value#anchor', "$u");
-        
+
         $u = new Url('http://hostname:8080/path?arg=value#anchor');
         $u->user('username')->pass('password');
 
         $this->assertEquals('http://username:password@hostname:8080/path?arg=value#anchor', "$u");
-        
+
         $u = new Url('http://hostname:8080/path?arg=value#anchor');
         $u->credential->user('username');
 
         $this->assertEquals('http://username@hostname:8080/path?arg=value#anchor', "$u");
     }
-
 
     public function testSettingPathShouldSuccess()
     {
@@ -166,7 +162,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->path = 'branch/leaf';
 
         $this->assertEquals('http://hostname:8080/branch/leaf?arg=value#anchor', "$u");
-        
+
         $u = new Url('http://hostname:8080?arg=value#anchor');
         $u->path->add('branch');
         $u->path->add('leaf');
@@ -174,9 +170,9 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://hostname:8080/branch/leaf?arg=value#anchor', "$u");
 
         $u->path->clear();
-        
+
         $this->assertEquals('http://hostname:8080?arg=value#anchor', "$u");
-        
+
         $u->path = 'other';
 
         $this->assertEquals('http://hostname:8080/other?arg=value#anchor', "$u");
@@ -187,7 +183,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->path->clear->add('something');
         $this->assertEquals('http://hostname:8080/something?arg=value#anchor', "$u");
     }
-    
+
     public function testSettingQueryShouldSuccess()
     {
         $u = new Url('http://hostname:8080/path#anchor');
@@ -222,7 +218,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->scheme = 'svn+ssh';
         $this->assertEquals('svn+ssh://hostname:8080/path#anchor', "$u");
     }
-    
+
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -231,7 +227,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u = new Url('http://hostname:8080/path#anchor');
         $u->scheme = '9https';
     }
-    
+
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -241,7 +237,6 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->scheme = 'https_écrit';
     }
 
-
     public function testSettingHostnameShouldSuccess()
     {
         $u = new Url('https://hostname:8080/path#anchor');
@@ -250,8 +245,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->host = 'localhost';
         $this->assertEquals('https://localhost:8080/path#anchor', "$u");
     }
-    
-    
+
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -260,7 +254,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u = new Url('https://hostname:8080/path#anchor');
         $u->host = 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz';
     }
-    
+
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -293,7 +287,6 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->port = -8080;
     }
 
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -302,7 +295,6 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u = new Url('https://hostname/path#anchor');
         $u->port = 65536;
     }
-
 
     /**
      * @expectedException \InvalidArgumentException
@@ -322,7 +314,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $u->port);
         $this->assertEquals(null, $u->port->get());
     }
-    
+
     public function testSettingPortInChainContextShouldSuccess()
     {
         $u = new Url('https://hostname/path#anchor');
@@ -350,7 +342,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->fragment('other');
         $this->assertEquals('https://hostname/path#other', "$u");
     }
-    
+
     public function testSettingChainingAnchorShouldSuccess()
     {
         $u = new Url('https://hostname/path#anchor');
@@ -375,7 +367,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->anchor->clear;
         $this->assertTrue($u->anchor->isVoid());
         $this->assertTrue($u->fragment->isVoid());
-        
+
         $u = new Url('https://hostname/path');
         $this->assertTrue($u->anchor->isVoid());
         $this->assertTrue($u->fragment->isVoid());
@@ -393,7 +385,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
         $this->assertEquals('https://login:pwd@example.org:123/path/other/way?arg=value&foo=bar#something', (string) $u->scheme('https')->user('login')->pass('pwd')->host('example.org')->port(123)->path('other/way')->query(array('foo' => 'bar'))->anchor('something'));
     }
-    
+
     public function testCloningUrlShouldSuccess()
     {
         $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');
@@ -417,7 +409,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->user('username')->pass('password');
         $this->assertTrue((string) $v->credential == (string) $u->credential);
     }
-    
+
     public function testDisablingPartShouldSuccess()
     {
         $u = new Url('http://username:password@hostname:8080/path?arg=value#anchor');

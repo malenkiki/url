@@ -23,7 +23,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 use \Malenki\Url\Url;
-use \Malenki\Url\Query;
 use \Malenki\Url\Path;
 
 class PathTest extends PHPUnit_Framework_TestCase
@@ -33,7 +32,6 @@ class PathTest extends PHPUnit_Framework_TestCase
         $p = new Path('/some/path/');
         $this->assertInstanceOf('\Malenki\Url\Path', $p);
     }
-
 
     public function testChangingPathNodeShouldSuccess()
     {

@@ -80,7 +80,6 @@ class SchemeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo.bar', $s->get());
     }
 
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -90,4 +89,3 @@ class SchemeTest extends PHPUnit_Framework_TestCase
         $s->set('http foo');
     }
 }
-

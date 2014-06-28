@@ -23,8 +23,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 use \Malenki\Url\Url;
-use \Malenki\Url\Query;
-use \Malenki\Url\Path;
 use \Malenki\Url\Credential;
 
 class CredentialTest extends PHPUnit_Framework_TestCase
@@ -41,7 +39,6 @@ class CredentialTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('malenki', $c->user);
         $this->assertEquals('S0m3:tH1n9', $c->pass);
     }
-
 
     public function testSettingByMagicSetterShouldSuccess()
     {
@@ -61,7 +58,7 @@ class CredentialTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('malenki', $c->user);
         $this->assertEquals('S0m3tH1n9', $c->pass);
         $this->assertEquals('malenki:S0m3tH1n9', "$c");
-        
+
         $c = new Credential();
         $c->user('malenki')->pass('S0m3tH1n9');
         $this->assertEquals('malenki', $c->user);

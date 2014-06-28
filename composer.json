@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "malenki/bah": "dev-master"
+        "malenki/bah": "0.9.3"
     },
     "autoload": {
         "psr-0": {

@@ -3,20 +3,20 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "0e20135b4e116abfa908327e4cb51e44",
+    "hash": "074a26e37828eb33988eaaa828f5f14f",
     "packages": [
         {
             "name": "malenki/bah",
-            "version": "dev-master",
+            "version": "0.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/malenkiki/bah.git",
-                "reference": "8b7f6097b3aea755edcb6d57d768227040377b4f"
+                "reference": "68563ac24a33fc608f52443f7309ed6a45abb498"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/malenkiki/bah/zipball/8b7f6097b3aea755edcb6d57d768227040377b4f",
-                "reference": "8b7f6097b3aea755edcb6d57d768227040377b4f",
+                "url": "https://api.github.com/repos/malenkiki/bah/zipball/68563ac24a33fc608f52443f7309ed6a45abb498",
+                "reference": "68563ac24a33fc608f52443f7309ed6a45abb498",
                 "shasum": ""
             },
             "require": {
@@ -40,14 +40,16 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Classes to use in place of array, string, integer PHP primitives",
+            "description": "Simple basic PHP classes to play with String, Character, Hash, Collection, Number… A little toolbox to replace PHP primitive types!",
             "homepage": "https://github.com/malenkiki/bah",
             "keywords": [
                 "array",
+                "character",
+                "hash",
                 "number",
                 "string"
             ],
-            "time": "2014-04-13 16:38:58"
+            "time": "2014-06-14 20:53:54"
         }
     ],
     "packages-dev": [
@@ -57,9 +59,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "malenki/bah": 20
-    },
+    "stability-flags": [
+
+    ],
     "platform": {
         "php": ">=5.3.0"
     },
